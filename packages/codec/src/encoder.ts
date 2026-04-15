@@ -7,11 +7,11 @@ import { estimateNLTokens, estimateAxonTokens } from "./tokenCounter.js";
 // We check for the first verb/keyword to determine the primary intent.
 
 const INTENT_RULES: Array<{ patterns: RegExp; symbol: string }> = [
-  { patterns: /\b(urgent|immediately|asap|right away)\b/i,       symbol: "⚡" },
+  { patterns: /\b(urgent(?:ly)?|immediately|asap|right away)\b/i,  symbol: "⚡" },
   { patterns: /\b(error|failed|exception|unable)\b/i,            symbol: "⊗" },
   { patterns: /\b(done|finished|completed|finalized)\b/i,        symbol: "∎" },
   { patterns: /\b(forward to|delegate|assign to)\b/i,            symbol: "→" },
-  { patterns: /\b(confirm|acknowledge|accept|agreed|approved)\b/i, symbol: "✓" },
+  { patterns: /\b(confirm(?:ed)?|acknowledge[d]?|accept(?:ed)?|agreed|approved)\b/i, symbol: "✓" },
   { patterns: /\b(reject|refuse|deny|denied|decline)\b/i,        symbol: "✗" },
   { patterns: /\b(merge|combine|consolidate)\b/i,                symbol: "⊕" },
   { patterns: /\b(retry|again|re-?run|repeat)\b/i,               symbol: "⟳" },
@@ -158,7 +158,7 @@ const PHRASE_MAP: Array<[RegExp, string | ((m: string) => string)]> = [
   [/\borchestrator\b/gi,                "orch"],
   [/\bretry(?:ing)?\b/gi,               "⟳"],
   [/\bdeployment\b/gi,                  "depl"],
-  [/\bdeployed?\b/gi,                   "depl"],
+  [/\bdeploy(?:ed|s|ing)?\b/gi,          "depl"],
   [/\bdatabase\b/gi,                    "db"],
   [/\bfilter(?:ed|ing|s)?\b/gi,         "⊂"],
   [/\bvalidat(?:e|ed|ion|ing)\b/gi,     "valid"],

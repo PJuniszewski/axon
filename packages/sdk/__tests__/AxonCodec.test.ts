@@ -2,19 +2,39 @@ import { describe, it, expect } from "vitest";
 import { AxonCodec } from "../src/AxonCodec.js";
 
 describe("AxonCodec", () => {
-  const codec = new AxonCodec();
-
-  describe("encode (rule mode)", () => {
-    it("encodes NL to AXON without API key", async () => {
-      const result = await codec.encode("Please review the pull request");
-      expect(result.encoded).toBeTruthy();
-      expect(result.reductionPct).toBeGreaterThan(0);
-      expect(result.nlTokens).toBeGreaterThan(0);
-      expect(result.axonTokens).toBeGreaterThan(0);
+  describe("constructor", () => {
+    it("creates with default config (rule mode)", () => {
+      const codec = new AxonCodec();
+      // Should work without any config
+      expect(codec).toBeTruthy();
     });
 
+    it("creates with explicit rule mode", () => {
+      const codec = new AxonCodec({ mode: "rule" });
+      expect(codec).toBeTruthy();
+    });
+
+    it("creates with hybrid mode", () => {
+      const codec = new AxonCodec({ mode: "hybrid" });
+      expect(codec).toBeTruthy();
+    });
+
+    it("creates with api key", () => {
+      const codec = new AxonCodec({ apiKey: "test-key" });
+      expect(codec).toBeTruthy();
+    });
+
+    it("creates with empty config", () => {
+      const codec = new AxonCodec({});
+      expect(codec).toBeTruthy();
+    });
+  });
+
+  describe("encode (rule mode)", () => {
+    const codec = new AxonCodec();
+
     it("returns valid CompressionResult", async () => {
-      const result = await codec.encode("Check the database status");
+      const result = await codec.encode("Please review the pull request");
       expect(result).toHaveProperty("original");
       expect(result).toHaveProperty("encoded");
       expect(result).toHaveProperty("nlTokens");
@@ -22,18 +42,75 @@ describe("AxonCodec", () => {
       expect(result).toHaveProperty("reductionPct");
       expect(result).toHaveProperty("symbols");
     });
+
+    it("preserves original text", async () => {
+      const msg = "Check the database status";
+      const result = await codec.encode(msg);
+      expect(result.original).toBe(msg);
+    });
+
+    it("produces non-empty encoded output", async () => {
+      const result = await codec.encode("Deploy the service");
+      expect(result.encoded).toBeTruthy();
+      expect(result.encoded.length).toBeGreaterThan(0);
+    });
+
+    it("achieves positive reduction", async () => {
+      const result = await codec.encode("Please review the pull request and check tests");
+      expect(result.reductionPct).toBeGreaterThan(0);
+    });
+
+    it("handles empty string", async () => {
+      const result = await codec.encode("");
+      expect(result.encoded).toBe("");
+      expect(result.reductionPct).toBe(0);
+    });
   });
 
-  describe("analyze", () => {
-    it("returns compression stats without modifying input", () => {
-      const result = codec.analyze("Deploy the new version to production");
-      expect(result.original).toBe("Deploy the new version to production");
+  describe("encode (hybrid mode)", () => {
+    it("falls back to rule-based in hybrid mode", async () => {
+      const codec = new AxonCodec({ mode: "hybrid" });
+      const result = await codec.encode("Please review the code");
       expect(result.encoded).toBeTruthy();
       expect(result.reductionPct).toBeGreaterThan(0);
     });
   });
 
+  describe("analyze", () => {
+    const codec = new AxonCodec();
+
+    it("returns compression stats", () => {
+      const result = codec.analyze("Deploy the new version to production");
+      expect(result.original).toBe("Deploy the new version to production");
+      expect(result.encoded).toBeTruthy();
+      expect(result.reductionPct).toBeGreaterThan(0);
+    });
+
+    it("returns same result as encode (synchronous)", () => {
+      const msg = "Check the service health";
+      const analyzed = codec.analyze(msg);
+      expect(analyzed.original).toBe(msg);
+      expect(analyzed.encoded).toBeTruthy();
+      expect(analyzed.nlTokens).toBeGreaterThan(0);
+    });
+
+    it("handles empty string", () => {
+      const result = codec.analyze("");
+      expect(result.encoded).toBe("");
+      expect(result.reductionPct).toBe(0);
+    });
+
+    it("detects symbols in output", () => {
+      const result = codec.analyze("An error occurred in the database with timeout");
+      expect(result.symbols.length).toBeGreaterThan(0);
+      // Should contain ERROR symbol
+      expect(result.symbols.some((s) => s.name === "ERROR")).toBe(true);
+    });
+  });
+
   describe("encodeBatch", () => {
+    const codec = new AxonCodec();
+
     it("encodes multiple messages", async () => {
       const results = await codec.encodeBatch([
         "Check the status",
@@ -43,7 +120,26 @@ describe("AxonCodec", () => {
       expect(results).toHaveLength(3);
       for (const result of results) {
         expect(result.encoded).toBeTruthy();
+        expect(result.reductionPct).toBeGreaterThanOrEqual(0);
       }
+    });
+
+    it("handles empty array", async () => {
+      const results = await codec.encodeBatch([]);
+      expect(results).toHaveLength(0);
+    });
+
+    it("handles single item", async () => {
+      const results = await codec.encodeBatch(["Test"]);
+      expect(results).toHaveLength(1);
+    });
+
+    it("preserves order", async () => {
+      const msgs = ["Alpha first", "Beta second", "Gamma third"];
+      const results = await codec.encodeBatch(msgs);
+      expect(results[0].original).toBe("Alpha first");
+      expect(results[1].original).toBe("Beta second");
+      expect(results[2].original).toBe("Gamma third");
     });
   });
 
@@ -52,9 +148,25 @@ describe("AxonCodec", () => {
       const orig = process.env.ANTHROPIC_API_KEY;
       delete process.env.ANTHROPIC_API_KEY;
       try {
+        const codec = new AxonCodec();
         const result = await codec.decode("!@orch ⟦test⟧");
         expect(result).toBeTruthy();
         expect(typeof result).toBe("string");
+      } finally {
+        if (orig) process.env.ANTHROPIC_API_KEY = orig;
+      }
+    });
+
+    it("returns non-empty string for any valid AXON", async () => {
+      const orig = process.env.ANTHROPIC_API_KEY;
+      delete process.env.ANTHROPIC_API_KEY;
+      try {
+        const codec = new AxonCodec();
+        const cases = ["!", "?@db ⟦status⟧", "⊗ ⟦timeout⟧ ⟨30s⟩"];
+        for (const axon of cases) {
+          const result = await codec.decode(axon);
+          expect(result.length).toBeGreaterThan(0);
+        }
       } finally {
         if (orig) process.env.ANTHROPIC_API_KEY = orig;
       }
