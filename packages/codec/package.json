@@ -1,0 +1,19 @@
+{
+  "name": "@axon/codec",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@axon/core": "workspace:*",
+    "@anthropic-ai/sdk": "^0.39.0"
+  }
+}
