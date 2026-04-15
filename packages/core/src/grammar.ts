@@ -1,15 +1,25 @@
 import type { AxonMsg, PerformativeType } from "./types.js";
-import { INTENT_SYMBOL_TO_PERFORMATIVE, PERFORMATIVE_TO_SYMBOL } from "./codebook.js";
+import {
+  CODEBOOK,
+  INTENT_SYMBOL_TO_PERFORMATIVE,
+  PERFORMATIVE_TO_SYMBOL,
+  PERFORMATIVE_TO_ASCII,
+} from "./codebook.js";
+
+// Build a map of ASCII intent symbols → PerformativeType
+const ASCII_INTENT_MAP = new Map<string, PerformativeType>();
+for (const entry of CODEBOOK) {
+  if (entry.category === "intent" && entry.ascii) {
+    ASCII_INTENT_MAP.set(entry.ascii, entry.name as PerformativeType);
+  }
+}
 
 /**
  * Parse an AXON-encoded message string into an AxonMsg object.
  *
- * Format: [INTENT] [@AGENT] ⟦PAYLOAD⟧ ⟨CONTEXT⟩
- *
- * - INTENT is required (one of the 11 intent symbols)
- * - @AGENT is optional; omit = broadcast
- * - ⟦PAYLOAD⟧ is the compressed operation body
- * - ⟨CONTEXT⟩ is optional metadata
+ * Supports both Unicode and ASCII-safe formats:
+ *   Unicode: [INTENT] [@AGENT] ⟦PAYLOAD⟧ ⟨CONTEXT⟩
+ *   ASCII:   [INTENT] [@AGENT] [[PAYLOAD]] <<CONTEXT>>
  */
 export function parseAxon(msg: string): AxonMsg {
   const raw = msg.trim();
@@ -19,7 +29,7 @@ export function parseAxon(msg: string): AxonMsg {
 
   let remaining = raw;
 
-  // 1. Extract intent symbol (first character or first few chars)
+  // 1. Extract intent symbol — try Unicode symbols first, then ASCII alternatives
   let performative: PerformativeType | undefined;
   let intentSymbol = "";
 
@@ -28,6 +38,20 @@ export function parseAxon(msg: string): AxonMsg {
       performative = perf;
       intentSymbol = symbol;
       break;
+    }
+  }
+
+  // Try ASCII intent symbols (longer ones first to avoid partial matches)
+  if (!performative) {
+    const asciiEntries = [...ASCII_INTENT_MAP.entries()].sort(
+      (a, b) => b[0].length - a[0].length,
+    );
+    for (const [ascii, perf] of asciiEntries) {
+      if (remaining.startsWith(ascii)) {
+        performative = perf;
+        intentSymbol = ascii;
+        break;
+      }
     }
   }
 
@@ -40,37 +64,66 @@ export function parseAxon(msg: string): AxonMsg {
   // 2. Extract agent (optional, starts with @)
   let agent: string | undefined;
   if (remaining.startsWith("@")) {
-    remaining = remaining.slice(1); // remove @
-    // Agent name continues until whitespace or ⟦ or ⟨ or end
-    const agentMatch = remaining.match(/^([^\s⟦⟨⟧⟩]+)/);
+    remaining = remaining.slice(1);
+    const agentMatch = remaining.match(/^([^\s⟦⟨⟧⟩\[\]<>]+)/);
     if (agentMatch) {
       agent = agentMatch[1];
       remaining = remaining.slice(agent.length).trimStart();
     }
   }
 
-  // 3. Extract payload (inside ⟦⟧)
+  // 3. Extract payload — try Unicode ⟦⟧ first, then ASCII [[]]
   let payload: string | undefined;
-  const payloadOpenIdx = remaining.indexOf("⟦");
-  const payloadCloseIdx = remaining.lastIndexOf("⟧");
-  if (payloadOpenIdx !== -1 && payloadCloseIdx > payloadOpenIdx) {
-    payload = remaining.slice(payloadOpenIdx + "⟦".length, payloadCloseIdx);
-    // Remove the payload section from remaining
+  let payloadFound = false;
+
+  const uPayloadOpen = remaining.indexOf("⟦");
+  const uPayloadClose = remaining.lastIndexOf("⟧");
+  if (uPayloadOpen !== -1 && uPayloadClose > uPayloadOpen) {
+    payload = remaining.slice(uPayloadOpen + "⟦".length, uPayloadClose);
     remaining =
-      remaining.slice(0, payloadOpenIdx) +
-      remaining.slice(payloadCloseIdx + "⟧".length);
+      remaining.slice(0, uPayloadOpen) +
+      remaining.slice(uPayloadClose + "⟧".length);
     remaining = remaining.trim();
+    payloadFound = true;
   }
 
-  // 4. Extract context (inside ⟨⟩)
+  if (!payloadFound) {
+    const aPayloadOpen = remaining.indexOf("[[");
+    const aPayloadClose = remaining.lastIndexOf("]]");
+    if (aPayloadOpen !== -1 && aPayloadClose > aPayloadOpen) {
+      payload = remaining.slice(aPayloadOpen + 2, aPayloadClose);
+      remaining =
+        remaining.slice(0, aPayloadOpen) +
+        remaining.slice(aPayloadClose + 2);
+      remaining = remaining.trim();
+      payloadFound = true;
+    }
+  }
+
+  // 4. Extract context — try Unicode ⟨⟩ first, then ASCII <<>>
   let context: string | undefined;
-  const ctxOpenIdx = remaining.indexOf("⟨");
-  const ctxCloseIdx = remaining.lastIndexOf("⟩");
-  if (ctxOpenIdx !== -1 && ctxCloseIdx > ctxOpenIdx) {
-    context = remaining.slice(ctxOpenIdx + "⟨".length, ctxCloseIdx);
+
+  const uCtxOpen = remaining.indexOf("⟨");
+  const uCtxClose = remaining.lastIndexOf("⟩");
+  if (uCtxOpen !== -1 && uCtxClose > uCtxOpen) {
+    context = remaining.slice(uCtxOpen + "⟨".length, uCtxClose);
+    remaining =
+      remaining.slice(0, uCtxOpen) +
+      remaining.slice(uCtxClose + "⟩".length);
+    remaining = remaining.trim();
+  } else {
+    const aCtxOpen = remaining.indexOf("<<");
+    const aCtxClose = remaining.lastIndexOf(">>");
+    if (aCtxOpen !== -1 && aCtxClose > aCtxOpen) {
+      context = remaining.slice(aCtxOpen + 2, aCtxClose);
+      remaining =
+        remaining.slice(0, aCtxOpen) +
+        remaining.slice(aCtxClose + 2);
+      remaining = remaining.trim();
+    }
   }
 
-  // If no payload was found in ⟦⟧, treat remaining text as payload
+  // If no payload was found in delimiters, treat remaining text as payload
   if (payload === undefined && remaining.length > 0) {
     payload = remaining;
   }
@@ -84,29 +137,47 @@ export function parseAxon(msg: string): AxonMsg {
   };
 }
 
+export interface FormatOptions {
+  ascii?: boolean;
+}
+
 /**
  * Format an AxonMsg object back into an AXON wire format string.
  *
- * Format: [INTENT] [@AGENT] ⟦PAYLOAD⟧ ⟨CONTEXT⟩
+ * @param msg The message to format
+ * @param options.ascii If true, use ASCII-safe symbols (1 token each on cl100k_base)
  */
-export function formatAxon(msg: AxonMsg): string {
-  const symbol = PERFORMATIVE_TO_SYMBOL.get(msg.performative);
-  if (!symbol) {
+export function formatAxon(msg: AxonMsg, options?: FormatOptions): string {
+  const useAscii = options?.ascii ?? false;
+
+  let intentStr: string | undefined;
+  if (useAscii) {
+    intentStr = PERFORMATIVE_TO_ASCII.get(msg.performative);
+  } else {
+    intentStr = PERFORMATIVE_TO_SYMBOL.get(msg.performative);
+  }
+
+  if (!intentStr) {
     throw new Error(`Unknown performative type: ${msg.performative}`);
   }
 
-  let result = symbol;
+  let result = intentStr;
 
   if (msg.agent) {
     result += `@${msg.agent}`;
   }
 
+  const pOpen = useAscii ? "[[" : "⟦";
+  const pClose = useAscii ? "]]" : "⟧";
+  const cOpen = useAscii ? "<<" : "⟨";
+  const cClose = useAscii ? ">>" : "⟩";
+
   if (msg.payload) {
-    result += ` ⟦${msg.payload}⟧`;
+    result += ` ${pOpen}${msg.payload}${pClose}`;
   }
 
   if (msg.context) {
-    result += ` ⟨${msg.context}⟩`;
+    result += ` ${cOpen}${msg.context}${cClose}`;
   }
 
   return result;

@@ -5,6 +5,7 @@
   "type": "module",
   "dependencies": {
     "@axon/codec": "workspace:*",
-    "@axon/core": "workspace:*"
+    "@axon/core": "workspace:*",
+    "js-tiktoken": "^1.0.21"
   }
 }

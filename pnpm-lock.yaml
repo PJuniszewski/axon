@@ -63,6 +63,9 @@ importers:
       '@axon/core':
         specifier: workspace:*
         version: link:../packages/core
+      js-tiktoken:
+        specifier: ^1.0.21
+        version: 1.0.21
 
   packages/codec:
     dependencies:
@@ -72,6 +75,9 @@ importers:
       '@axon/core':
         specifier: workspace:*
         version: link:../core
+      js-tiktoken:
+        specifier: ^1.0.21
+        version: 1.0.21
 
   packages/core: {}
 
@@ -819,6 +825,9 @@ packages:
   avvio@9.2.0:
     resolution: {integrity: sha512-2t/sy01ArdHHE0vRH5Hsay+RtCZt3dLPji7W7/MMOCEgze5b7SNDC4j5H6FnVgPkI1MTNFGzHdHrVXDDl7QSSQ==}
 
+  base64-js@1.5.1:
+    resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
+
   baseline-browser-mapping@2.10.19:
     resolution: {integrity: sha512-qCkNLi2sfBOn8XhZQ0FXsT1Ki/Yo5P90hrkRamVFRS7/KV9hpfA4HkoWNU152+8w0zPjnxo5psx5NL3PSGgv5g==}
     engines: {node: '>=6.0.0'}
@@ -1027,6 +1036,9 @@ packages:
   ipaddr.js@2.3.0:
     resolution: {integrity: sha512-Zv/pA+ciVFbCSBBjGfaKUya/CcGmUHzTydLMaTwrUUEM2DIEO3iZvueGxmacvmN50fGpGVKeTXpb2LcYQxeVdg==}
     engines: {node: '>= 10'}
+
+  js-tiktoken@1.0.21:
+    resolution: {integrity: sha512-biOj/6M5qdgx5TKjDnFT1ymSpM5tbd3ylwDtrQvFQSu0Z7bBYko2dF+W/aUkXUPuk6IVpRxk/3Q2sHOzGlS36g==}
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -1949,6 +1961,8 @@ snapshots:
       '@fastify/error': 4.2.0
       fastq: 1.20.1
 
+  base64-js@1.5.1: {}
+
   baseline-browser-mapping@2.10.19: {}
 
   browserslist@4.28.2:
@@ -2205,6 +2219,10 @@ snapshots:
       ms: 2.1.3
 
   ipaddr.js@2.3.0: {}
+
+  js-tiktoken@1.0.21:
+    dependencies:
+      base64-js: 1.5.1
 
   js-tokens@4.0.0: {}
 

@@ -6,6 +6,8 @@ export interface AxonSymbol {
   desc: string;
   category: SymbolCategory;
   tokenHint?: number;
+  ascii?: string;        // ASCII-safe alternative (1 token on cl100k_base)
+  cl100kTokens?: number; // actual token count on cl100k_base
 }
 
 export type PerformativeType =

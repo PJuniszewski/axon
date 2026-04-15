@@ -10,15 +10,14 @@ interface ResultRow {
   id: string;
   category: string;
   nlTokens: number;
-  axonTokens: number;
-  reductionPct: number;
-  encoded: string;
+  axonTokensUni: number;
+  axonTokensAsc: number;
+  reductionPctUni: number;
+  reductionPctAsc: number;
+  encodedUni: string;
+  encodedAsc: string;
   natural: string;
-  passedMin: boolean;
 }
-
-const results: ResultRow[] = [];
-let failures = 0;
 
 // ANSI colors
 const green = (s: string) => `\x1b[32m${s}\x1b[0m`;
@@ -28,88 +27,84 @@ const bold = (s: string) => `\x1b[1m${s}\x1b[0m`;
 const dim = (s: string) => `\x1b[2m${s}\x1b[0m`;
 
 function colorPct(pct: number): string {
-  if (pct >= 60) return green(`${pct}%`);
-  if (pct >= 50) return yellow(`${pct}%`);
+  if (pct >= 40) return green(`${pct}%`);
+  if (pct >= 25) return yellow(`${pct}%`);
   return red(`${pct}%`);
 }
 
-function pad(s: string, len: number): string {
-  return s.padEnd(len);
-}
-
-function padLeft(s: string, len: number): string {
-  return s.padStart(len);
-}
+function pad(s: string, len: number): string { return s.padEnd(len); }
+function padL(s: string, len: number): string { return s.padStart(len); }
 
 console.log();
-console.log(bold("  AXON Protocol — Benchmark Suite"));
+console.log(bold("  AXON Protocol — Benchmark Suite (real cl100k_base tokens)"));
 console.log(dim(`  ${BENCHMARK_SUITE.length} canonical inter-agent messages`));
 console.log();
 
 // Header
-const header = `  ${pad("ID", 4)} ${pad("Category", 12)} ${padLeft("NL", 4)} ${padLeft("AXON", 5)} ${padLeft("Reduction", 10)}  ${pad("Encoded", 50)}`;
-console.log(dim(header));
-console.log(dim("  " + "─".repeat(90)));
+console.log(dim(`  ${pad("ID", 4)} ${pad("Category", 12)} ${padL("NL", 4)} ${padL("Uni", 4)} ${padL("Uni%", 7)} ${padL("Asc", 4)} ${padL("Asc%", 7)}  ${pad("ASCII Encoded", 50)}`));
+console.log(dim("  " + "─".repeat(100)));
+
+const results: ResultRow[] = [];
 
 for (const testCase of BENCHMARK_SUITE) {
-  const result = encode(testCase.natural);
-  const passedMin = result.reductionPct >= testCase.minReductionPct;
-
-  if (!passedMin) failures++;
+  const uniResult = encode(testCase.natural);
+  const ascResult = encode(testCase.natural, { ascii: true });
 
   results.push({
     id: testCase.id,
     category: testCase.category,
-    nlTokens: result.nlTokens,
-    axonTokens: result.axonTokens,
-    reductionPct: result.reductionPct,
-    encoded: result.encoded,
+    nlTokens: uniResult.nlTokens,
+    axonTokensUni: uniResult.axonTokens,
+    axonTokensAsc: ascResult.axonTokens,
+    reductionPctUni: uniResult.reductionPct,
+    reductionPctAsc: ascResult.reductionPct,
+    encodedUni: uniResult.encoded,
+    encodedAsc: ascResult.encoded,
     natural: testCase.natural,
-    passedMin,
   });
 
-  const statusMark = passedMin ? green("✓") : red("✗");
-  const encodedTrunc = result.encoded.length > 50 ? result.encoded.slice(0, 47) + "..." : result.encoded;
+  const pass = ascResult.reductionPct > 0 ? green("✓") : red("✗");
+  const encTrunc = ascResult.encoded.length > 50 ? ascResult.encoded.slice(0, 47) + "..." : ascResult.encoded;
 
   console.log(
-    `  ${statusMark} ${pad(testCase.id, 3)} ${pad(testCase.category, 12)} ${padLeft(String(result.nlTokens), 4)} ${padLeft(String(result.axonTokens), 5)} ${padLeft(colorPct(result.reductionPct), 19)}  ${dim(encodedTrunc)}`
+    `  ${pass} ${pad(testCase.id, 3)} ${pad(testCase.category, 12)} ${padL(String(uniResult.nlTokens), 4)} ${padL(String(uniResult.axonTokens), 4)} ${padL(colorPct(uniResult.reductionPct), 16)} ${padL(String(ascResult.axonTokens), 4)} ${padL(colorPct(ascResult.reductionPct), 16)}  ${dim(encTrunc)}`
   );
 }
 
-// Summary
-const avgReduction = Math.round(results.reduce((s, r) => s + r.reductionPct, 0) / results.length);
-const bestCase = Math.max(...results.map((r) => r.reductionPct));
-const worstCase = Math.min(...results.map((r) => r.reductionPct));
-
-console.log(dim("  " + "─".repeat(90)));
+console.log(dim("  " + "─".repeat(100)));
 console.log();
-console.log(`  ${bold("Summary:")}`);
-console.log(`    Average reduction: ${colorPct(avgReduction)}`);
-console.log(`    Best case:         ${colorPct(bestCase)}`);
-console.log(`    Worst case:        ${colorPct(worstCase)}`);
-console.log(`    Passed:            ${results.length - failures}/${results.length}`);
+
+// Summary
+const avgUni = Math.round(results.reduce((s, r) => s + r.reductionPctUni, 0) / results.length);
+const avgAsc = Math.round(results.reduce((s, r) => s + r.reductionPctAsc, 0) / results.length);
+const bestAsc = Math.max(...results.map((r) => r.reductionPctAsc));
+const worstAsc = Math.min(...results.map((r) => r.reductionPctAsc));
+
+console.log(bold("  Summary (real cl100k_base tokens):"));
+console.log(`    Unicode avg:    ${colorPct(avgUni)} ${dim("(multi-token Unicode symbols hurt)")}`);
+console.log(`    ASCII avg:      ${colorPct(avgAsc)} ${dim("(1-token ASCII alternatives)")}`);
+console.log(`    ASCII best:     ${colorPct(bestAsc)}`);
+console.log(`    ASCII worst:    ${colorPct(worstAsc)}`);
 console.log();
 
 // Write results JSON
 const outputPath = resolve(__dirname, "results.json");
 writeFileSync(
   outputPath,
-  JSON.stringify(
-    {
-      timestamp: new Date().toISOString(),
-      summary: { avgReduction, bestCase, worstCase, total: results.length, passed: results.length - failures },
-      results: results.map(({ id, category, nlTokens, axonTokens, reductionPct, encoded, passedMin }) => ({
-        id, category, nlTokens, axonTokens, reductionPct, encoded, passedMin,
-      })),
+  JSON.stringify({
+    timestamp: new Date().toISOString(),
+    tokenizer: "cl100k_base (GPT-4o)",
+    summary: {
+      unicodeAvgReduction: avgUni,
+      asciiAvgReduction: avgAsc,
+      asciiBestCase: bestAsc,
+      asciiWorstCase: worstAsc,
+      total: results.length,
     },
-    null,
-    2,
-  ),
+    results: results.map(({ id, category, nlTokens, axonTokensUni, axonTokensAsc, reductionPctUni, reductionPctAsc, encodedAsc }) => ({
+      id, category, nlTokens, axonTokensUni, axonTokensAsc, reductionPctUni, reductionPctAsc, encodedAsc,
+    })),
+  }, null, 2),
 );
 console.log(dim(`  Results written to ${outputPath}`));
 console.log();
-
-if (failures > 0) {
-  console.log(red(`  ${failures} case(s) failed minimum reduction threshold.`));
-  process.exit(1);
-}

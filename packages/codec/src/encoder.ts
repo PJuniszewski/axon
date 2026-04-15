@@ -335,12 +335,22 @@ function detectSymbols(encoded: string): AxonSymbol[] {
 
 // ---------- Main Encoder ----------
 
+export interface EncodeOptions {
+  /** Use ASCII-safe symbols (1 token each on cl100k_base) instead of Unicode */
+  ascii?: boolean;
+}
+
 /**
  * Encode a natural language message into AXON format.
  * Pure rule-based — no LLM call needed.
+ *
+ * @param nl Natural language input
+ * @param options.ascii If true, use ASCII-safe symbols for better tokenization
  */
-export function encode(nl: string): CompressionResult {
+export function encode(nl: string, options?: EncodeOptions): CompressionResult {
   const original = nl.trim();
+  const useAscii = options?.ascii ?? false;
+
   if (!original) {
     return {
       original,
@@ -370,17 +380,35 @@ export function encode(nl: string): CompressionResult {
   // 6. Clean up
   const cleaned = cleanupOutput(compressed);
 
-  // 7. Build AXON format
-  let encoded = intentSymbol;
+  // 7. Build AXON format — use ASCII delimiters if requested
+  let finalIntent = intentSymbol;
+  if (useAscii) {
+    const entry = SYMBOL_MAP.get(intentSymbol);
+    if (entry?.ascii) finalIntent = entry.ascii;
+  }
+
+  let encoded = finalIntent;
   if (agent) {
     encoded += `@${agent}`;
   }
 
+  const pOpen = useAscii ? "[[" : "⟦";
+  const pClose = useAscii ? "]]" : "⟧";
+
   if (cleaned) {
-    encoded += `⟦${cleaned}⟧`;
+    let payload = cleaned;
+    if (useAscii) {
+      // Replace Unicode symbols with ASCII alternatives in payload
+      for (const entry of CODEBOOK) {
+        if (entry.ascii && payload.includes(entry.symbol)) {
+          payload = payload.replaceAll(entry.symbol, entry.ascii);
+        }
+      }
+    }
+    encoded += `${pOpen}${payload}${pClose}`;
   }
 
-  // 8. Token estimates
+  // 8. Token counts — real tokenizer
   const nlTokens = estimateNLTokens(original);
   const axonTokens = estimateAxonTokens(encoded);
   const reductionPct =

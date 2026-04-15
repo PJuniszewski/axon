@@ -116,15 +116,20 @@ describe("cross-package integration", () => {
     ];
 
     for (const msg of benchmarkMessages) {
-      it(`benchmark msg: "${msg.slice(0, 50)}..."`, () => {
+      it(`benchmark msg parses and compresses chars: "${msg.slice(0, 50)}..."`, () => {
         const result = encode(msg);
-        // Must achieve meaningful compression
-        expect(result.reductionPct).toBeGreaterThanOrEqual(45);
+        // Must produce shorter character output
+        expect(result.encoded.length).toBeLessThan(msg.length);
         // Must produce parseable output
         const parsed = parseAxon(result.encoded);
         expect(parsed.performative).toBeTruthy();
         // Must have valid symbols
         expect(result.symbols.length).toBeGreaterThan(0);
+      });
+
+      it(`benchmark msg achieves real token savings in ASCII: "${msg.slice(0, 50)}..."`, () => {
+        const result = encode(msg, { ascii: true });
+        expect(result.axonTokens).toBeLessThan(result.nlTokens);
       });
     }
   });

@@ -1,25 +1,43 @@
+import { encodingForModel } from "js-tiktoken";
+
+let _enc: ReturnType<typeof encodingForModel> | null = null;
+
+function getEncoder() {
+  if (!_enc) {
+    _enc = encodingForModel("gpt-4o");
+  }
+  return _enc;
+}
+
+/**
+ * Count tokens using cl100k_base (GPT-4o encoding).
+ * Closest available proxy for Claude's tokenizer.
+ */
+export function countTokens(text: string): number {
+  if (!text.trim()) return 0;
+  return getEncoder().encode(text).length;
+}
+
 /**
  * Estimate token count for natural language text.
- * Rough approximation: average English word ≈ 1.35 tokens.
- * Longer and compound words tend toward 1.5-2 tokens.
+ * Uses real cl100k_base tokenizer.
  */
 export function estimateNLTokens(text: string): number {
-  const words = text.trim().split(/\s+/).filter(Boolean);
-  return Math.ceil(words.length * 1.35);
+  return countTokens(text);
 }
 
 /**
  * Estimate token count for AXON-encoded text.
- * AXON is denser than NL due to symbols (1 token each) and short stems.
- * Unicode symbols often count as 1 token. Short stems (3-4 chars) ≈ 1 token.
+ * Uses real cl100k_base tokenizer.
  */
 export function estimateAxonTokens(text: string): number {
-  return Math.ceil(text.length / 4);
+  return countTokens(text);
 }
 
 /**
  * Generic estimator that dispatches based on type.
+ * With real tokenizer, both modes use the same underlying counter.
  */
 export function estimateTokens(text: string, type: "nl" | "axon"): number {
-  return type === "nl" ? estimateNLTokens(text) : estimateAxonTokens(text);
+  return countTokens(text);
 }

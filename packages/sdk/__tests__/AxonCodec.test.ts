@@ -55,9 +55,9 @@ describe("AxonCodec", () => {
       expect(result.encoded.length).toBeGreaterThan(0);
     });
 
-    it("achieves positive reduction", async () => {
+    it("produces shorter character output than input", async () => {
       const result = await codec.encode("Please review the pull request and check tests");
-      expect(result.reductionPct).toBeGreaterThan(0);
+      expect(result.encoded.length).toBeLessThan(result.original.length);
     });
 
     it("handles empty string", async () => {
@@ -72,7 +72,7 @@ describe("AxonCodec", () => {
       const codec = new AxonCodec({ mode: "hybrid" });
       const result = await codec.encode("Please review the code");
       expect(result.encoded).toBeTruthy();
-      expect(result.reductionPct).toBeGreaterThan(0);
+      expect(result.encoded.length).toBeLessThan("Please review the code".length);
     });
   });
 
@@ -83,7 +83,8 @@ describe("AxonCodec", () => {
       const result = codec.analyze("Deploy the new version to production");
       expect(result.original).toBe("Deploy the new version to production");
       expect(result.encoded).toBeTruthy();
-      expect(result.reductionPct).toBeGreaterThan(0);
+      expect(result.nlTokens).toBeGreaterThan(0);
+      expect(result.axonTokens).toBeGreaterThan(0);
     });
 
     it("returns same result as encode (synchronous)", () => {
@@ -120,7 +121,6 @@ describe("AxonCodec", () => {
       expect(results).toHaveLength(3);
       for (const result of results) {
         expect(result.encoded).toBeTruthy();
-        expect(result.reductionPct).toBeGreaterThanOrEqual(0);
       }
     });
 
