@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { CODEC_PROMPT } from "../src/codecfit.js";
+import { CODEC_PROMPT, CODECFIT_INJECT, CODECFIT_TOKEN_BUDGET, injectCodecFit, stripCodecFit } from "../src/codecfit.js";
 import { decode } from "../src/decoder.js";
-import { estimateNLTokens } from "../src/tokenCounter.js";
+import { estimateNLTokens, countTokens } from "../src/tokenCounter.js";
 
 describe("CODEC_PROMPT", () => {
   it("is under 220 tokens (estimated)", () => {
@@ -52,6 +52,51 @@ describe("CODEC_PROMPT", () => {
   it("is non-empty and reasonable length", () => {
     expect(CODEC_PROMPT.length).toBeGreaterThan(100);
     expect(CODEC_PROMPT.length).toBeLessThan(2000);
+  });
+});
+
+describe("CODECFIT_INJECT (native mode prompt)", () => {
+  it("is under token budget", () => {
+    const tokens = countTokens(CODECFIT_INJECT);
+    expect(tokens).toBeLessThanOrEqual(CODECFIT_TOKEN_BUDGET);
+  });
+
+  it("contains ASCII intent symbols", () => {
+    expect(CODECFIT_INJECT).toContain("ERR");
+    expect(CODECFIT_INJECT).toContain("DONE");
+    expect(CODECFIT_INJECT).toContain("RPT");
+    expect(CODECFIT_INJECT).toContain("!!");
+  });
+
+  it("contains format description", () => {
+    expect(CODECFIT_INJECT).toContain("FORMAT:");
+    expect(CODECFIT_INJECT).toContain("INTENT");
+  });
+
+  it("contains examples", () => {
+    expect(CODECFIT_INJECT).toContain("@orch");
+    expect(CODECFIT_INJECT).toContain("PR#42");
+  });
+});
+
+describe("injectCodecFit / stripCodecFit", () => {
+  it("injects CodecFit before existing prompt", () => {
+    const injected = injectCodecFit("You are a code reviewer.");
+    expect(injected).toContain("PROTOCOL:AXON");
+    expect(injected).toContain("---");
+    expect(injected).toContain("You are a code reviewer.");
+    expect(injected.indexOf("PROTOCOL:AXON")).toBeLessThan(injected.indexOf("You are a code reviewer."));
+  });
+
+  it("stripCodecFit recovers original prompt", () => {
+    const original = "You are a helpful assistant.";
+    const injected = injectCodecFit(original);
+    const stripped = stripCodecFit(injected);
+    expect(stripped).toBe(original);
+  });
+
+  it("stripCodecFit returns unchanged if no CodecFit", () => {
+    expect(stripCodecFit("Just a normal prompt")).toBe("Just a normal prompt");
   });
 });
 

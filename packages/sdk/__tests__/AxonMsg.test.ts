@@ -193,3 +193,18 @@ describe("AxonMsg.parse", () => {
     expect(parsed.context).toBe("30s");
   });
 });
+
+describe("AxonMsg.isAxon", () => {
+  it("returns true for valid AXON", () => {
+    expect(AxonMsg.isAxon("! @orch [[test]]")).toBe(true);
+    expect(AxonMsg.isAxon("ERR pay.svc:T/O")).toBe(true);
+    expect(AxonMsg.isAxon("DONE depl [[svc:run]]")).toBe(true);
+    expect(AxonMsg.isAxon("✓")).toBe(true);
+  });
+
+  it("returns false for NL", () => {
+    expect(AxonMsg.isAxon("Please review the pull request")).toBe(false);
+    expect(AxonMsg.isAxon("Hello world")).toBe(false);
+    expect(AxonMsg.isAxon("")).toBe(false);
+  });
+});

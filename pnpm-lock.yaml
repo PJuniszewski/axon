@@ -57,6 +57,9 @@ importers:
 
   benchmarks:
     dependencies:
+      '@anthropic-ai/sdk':
+        specifier: ^0.39.0
+        version: 0.39.0
       '@axon/codec':
         specifier: workspace:*
         version: link:../packages/codec
@@ -83,6 +86,12 @@ importers:
 
   packages/gateway:
     dependencies:
+      '@axon/codec':
+        specifier: workspace:*
+        version: link:../codec
+      '@axon/core':
+        specifier: workspace:*
+        version: link:../core
       '@axon/sdk':
         specifier: workspace:*
         version: link:../sdk

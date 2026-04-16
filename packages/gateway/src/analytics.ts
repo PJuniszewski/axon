@@ -51,4 +51,45 @@ export class AnalyticsTracker {
     this.listeners.add(listener);
     return () => this.listeners.delete(listener);
   }
+
+  // ── Native mode analytics ──
+
+  private boundaryDecodes = 0;
+  private boundarySavedTokens = 0;
+  private nlFallbacks = 0;
+  private complianceHits = new Map<string, { axon: number; nl: number }>();
+
+  recordBoundary(agentId: string, axonTokens: number, nlTokens: number): void {
+    this.boundaryDecodes++;
+    this.boundarySavedTokens += nlTokens - axonTokens;
+  }
+
+  recordNLFallback(agentId: string): void {
+    this.nlFallbacks++;
+    this.recordCompliance(agentId, false);
+  }
+
+  recordCompliance(agentId: string, isAxon: boolean): void {
+    if (!this.complianceHits.has(agentId)) {
+      this.complianceHits.set(agentId, { axon: 0, nl: 0 });
+    }
+    const entry = this.complianceHits.get(agentId)!;
+    if (isAxon) entry.axon++; else entry.nl++;
+  }
+
+  getExtendedStats() {
+    const base = this.getTotalSavings();
+    const agentCompliance: Record<string, number> = {};
+    for (const [id, hits] of this.complianceHits) {
+      const total = hits.axon + hits.nl;
+      agentCompliance[id] = total > 0 ? Math.round((hits.axon / total) * 100) : 0;
+    }
+    return {
+      ...base,
+      totalBoundaryDecodes: this.boundaryDecodes,
+      totalSavedTokens: this.boundarySavedTokens,
+      nlFallbacks: this.nlFallbacks,
+      agentCompliance,
+    };
+  }
 }

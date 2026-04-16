@@ -172,4 +172,63 @@ describe("AxonCodec", () => {
       }
     });
   });
+
+  describe("native mode", () => {
+    it("creates with native mode", () => {
+      const codec = new AxonCodec({ mode: "native" });
+      expect(codec).toBeTruthy();
+    });
+
+    it("encode in native mode uses rule-based fallback", async () => {
+      const codec = new AxonCodec({ mode: "native" });
+      const result = await codec.encode("Please review the pull request and check tests");
+      expect(result.encoded).toBeTruthy();
+    });
+  });
+
+  describe("injectCodecFit", () => {
+    const codec = new AxonCodec();
+
+    it("injects CodecFit into system prompt", () => {
+      const result = codec.injectCodecFit("You are a helpful bot.");
+      expect(result).toContain("PROTOCOL:AXON");
+      expect(result).toContain("You are a helpful bot.");
+    });
+  });
+
+  describe("parseAgentOutput", () => {
+    const codec = new AxonCodec();
+
+    it("parses valid AXON", () => {
+      const r = codec.parseAgentOutput("! @orch [[test]]");
+      expect(r.valid).toBe(true);
+      expect(r.parsed?.performative).toBe("REQUEST");
+    });
+
+    it("detects NL fallback", () => {
+      const r = codec.parseAgentOutput("This is not AXON");
+      expect(r.valid).toBe(false);
+      expect(r.fallbackToNL).toBe(true);
+    });
+
+    it("handles empty string", () => {
+      const r = codec.parseAgentOutput("");
+      expect(r.valid).toBe(false);
+    });
+  });
+
+  describe("measureBoundarySavings", () => {
+    const codec = new AxonCodec();
+
+    it("measures token savings", () => {
+      const r = codec.measureBoundarySavings(
+        "! @orch [[rev PR#42]]",
+        "Please review pull request number 42 for the orchestrator",
+      );
+      expect(r.axonTokens).toBeGreaterThan(0);
+      expect(r.nlTokens).toBeGreaterThan(0);
+      expect(r.savedTokens).toBeGreaterThan(0);
+      expect(r.reductionPct).toBeGreaterThan(0);
+    });
+  });
 });

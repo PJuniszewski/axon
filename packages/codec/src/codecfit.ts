@@ -1,5 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 
+// ── Legacy prompt (used by decoder) ──
+
 export const CODEC_PROMPT = `You are an AXON protocol decoder. AXON is a compact symbolic language for agent communication.
 
 SYMBOL REFERENCE:
@@ -14,6 +16,31 @@ FORMAT: [INTENT][@AGENT]⟦PAYLOAD⟧⟨CONTEXT⟩
 When given AXON, decode to clear natural language.
 When given natural language, encode to AXON.
 If unsure of a symbol, preserve natural language for that fragment.`;
+
+// ── Native injection prompt (ASCII-safe, optimized for token budget) ──
+
+export const CODECFIT_INJECT = `PROTOCOL:AXON — agent msgs in this format only.
+! req ? query == info -> delegate OK confirm NO reject ERR error DONE complete RPT retry !! urgent +> merge
+@agent [[payload]] <<ctx>> | pipe : assign # ref && and || or >= gte <= lte <: filter SUM agg [] batch T/O timeout
+FORMAT: INTENT[@AGENT][[PAYLOAD]]<<CTX>>
+! @orch [[rev PR#42 | ? tst pass -> SUM rpt]]
+ERR pay.svc:T/O<<30s>> -> RPT expbkf
+DONE [[svc#12:run && hchk:pass && ERR:_]]
+All agent msgs in AXON. NL for humans only.`.trim();
+
+export const CODECFIT_TOKEN_BUDGET = 150;
+
+const CODECFIT_SEPARATOR = "\n\n---\n\n";
+
+export function injectCodecFit(existingSystemPrompt: string): string {
+  return `${CODECFIT_INJECT}${CODECFIT_SEPARATOR}${existingSystemPrompt}`;
+}
+
+export function stripCodecFit(systemPrompt: string): string {
+  if (!systemPrompt.includes("PROTOCOL:AXON") && !systemPrompt.includes("PROTOCOL: AXON")) return systemPrompt;
+  const parts = systemPrompt.split("---\n\n");
+  return parts.length > 1 ? parts.slice(1).join("---\n\n") : systemPrompt;
+}
 
 function createClient(apiKey?: string): Anthropic {
   return new Anthropic({ apiKey: apiKey ?? process.env.ANTHROPIC_API_KEY });

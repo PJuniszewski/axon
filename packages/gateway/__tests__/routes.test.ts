@@ -239,4 +239,126 @@ describe("Gateway routes", () => {
       }
     });
   });
+
+  // ── Native mode routes ──
+
+  describe("POST /inject", () => {
+    it("injects CodecFit into system prompt", async () => {
+      const res = await app.inject({
+        method: "POST",
+        url: "/inject",
+        payload: { systemPrompt: "You are a code reviewer." },
+      });
+      expect(res.statusCode).toBe(200);
+      const body = JSON.parse(res.body);
+      expect(body.injected).toContain("PROTOCOL:AXON");
+      expect(body.injected).toContain("---");
+      expect(body.injected).toContain("You are a code reviewer.");
+    });
+  });
+
+  describe("POST /validate", () => {
+    it("validates valid AXON", async () => {
+      const res = await app.inject({
+        method: "POST",
+        url: "/validate",
+        payload: { message: "! @orch [[rev PR#42]]" },
+      });
+      expect(res.statusCode).toBe(200);
+      const body = JSON.parse(res.body);
+      expect(body.valid).toBe(true);
+      expect(body.parseable).toBe(true);
+    });
+
+    it("rejects NL with fallback flag", async () => {
+      const res = await app.inject({
+        method: "POST",
+        url: "/validate",
+        payload: { message: "Please review the pull request" },
+      });
+      expect(res.statusCode).toBe(200);
+      const body = JSON.parse(res.body);
+      expect(body.valid).toBe(false);
+      expect(body.fallbackToNL).toBe(true);
+    });
+  });
+
+  describe("POST /parse", () => {
+    it("parses valid AXON", async () => {
+      const res = await app.inject({
+        method: "POST",
+        url: "/parse",
+        payload: { message: "! @orch [[test]]" },
+      });
+      expect(res.statusCode).toBe(200);
+      const body = JSON.parse(res.body);
+      expect(body.success).toBe(true);
+      expect(body.parsed.performative).toBe("REQUEST");
+      expect(body.parsed.agent).toBe("orch");
+    });
+
+    it("returns error for invalid AXON", async () => {
+      const res = await app.inject({
+        method: "POST",
+        url: "/parse",
+        payload: { message: "not axon" },
+      });
+      expect(res.statusCode).toBe(200);
+      const body = JSON.parse(res.body);
+      expect(body.success).toBe(false);
+      expect(body.error).toBeTruthy();
+    });
+  });
+
+  describe("POST /agents/register + GET /agents", () => {
+    it("registers an agent and lists it", async () => {
+      const regRes = await app.inject({
+        method: "POST",
+        url: "/agents/register",
+        payload: { id: "test-agent", url: "http://localhost:9999" },
+      });
+      expect(regRes.statusCode).toBe(200);
+      const agent = JSON.parse(regRes.body);
+      expect(agent.id).toBe("test-agent");
+      expect(agent.codecfitInjected).toBe(true);
+
+      const listRes = await app.inject({ method: "GET", url: "/agents" });
+      expect(listRes.statusCode).toBe(200);
+      const agents = JSON.parse(listRes.body);
+      expect(agents.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe("POST /route", () => {
+    it("routes AXON to registered agent", async () => {
+      // Register first
+      await app.inject({
+        method: "POST",
+        url: "/agents/register",
+        payload: { id: "router-test", url: "http://localhost:9999" },
+      });
+
+      const res = await app.inject({
+        method: "POST",
+        url: "/route",
+        payload: { message: "! @router-test [[test msg]]" },
+      });
+      expect(res.statusCode).toBe(200);
+      const body = JSON.parse(res.body);
+      expect(body.targetAgent).toBe("router-test");
+      expect(body.forwarded).toBe(true);
+    });
+  });
+
+  describe("GET /analytics (extended)", () => {
+    it("returns extended stats with compliance fields", async () => {
+      const res = await app.inject({ method: "GET", url: "/analytics" });
+      expect(res.statusCode).toBe(200);
+      const body = JSON.parse(res.body);
+      expect(body).toHaveProperty("totalMessages");
+      expect(body).toHaveProperty("nlFallbacks");
+      expect(body).toHaveProperty("agentCompliance");
+      expect(body).toHaveProperty("totalBoundaryDecodes");
+    });
+  });
 });

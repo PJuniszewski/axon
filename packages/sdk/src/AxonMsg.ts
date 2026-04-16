@@ -106,4 +106,13 @@ export class AxonMsg {
   static parse(raw: string): AxonMsgType {
     return parseAxon(raw);
   }
+
+  static isAxon(text: string): boolean {
+    try {
+      parseAxon(text.trim());
+      return true;
+    } catch {
+      return false;
+    }
+  }
 }
