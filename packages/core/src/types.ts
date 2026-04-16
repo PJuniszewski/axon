@@ -38,4 +38,5 @@ export interface CompressionResult {
   axonTokens: number;
   reductionPct: number;
   symbols: AxonSymbol[];
+  skipped?: boolean;
 }

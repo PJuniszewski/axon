@@ -70,9 +70,9 @@ describe("AxonCodec", () => {
   describe("encode (hybrid mode)", () => {
     it("falls back to rule-based in hybrid mode", async () => {
       const codec = new AxonCodec({ mode: "hybrid" });
-      const result = await codec.encode("Please review the code");
+      const result = await codec.encode("Please review the code changes in the pull request");
       expect(result.encoded).toBeTruthy();
-      expect(result.encoded.length).toBeLessThan("Please review the code".length);
+      expect(result.encoded.length).toBeLessThan("Please review the code changes in the pull request".length);
     });
   });
 
