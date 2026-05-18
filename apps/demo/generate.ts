@@ -366,15 +366,41 @@ function buildHtml(convs: Conversation[]): string {
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 13px; line-height: 1.5; }
 .mono { font-family: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace; }
-header { padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 24px; }
+header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
 h1 { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: 0.3px; }
 .subtitle { color: var(--text-dim); font-size: 12px; }
-.stats { display: flex; gap: 24px; margin-left: auto; font-size: 12px; color: var(--text-dim); }
+.stats { display: flex; gap: 18px; margin-left: auto; font-size: 12px; color: var(--text-dim); flex-wrap: wrap; }
 .stats b { color: var(--text); margin-left: 4px; }
+
+/* Mobile tabs */
+.tabs { display: none; border-bottom: 1px solid var(--border); background: var(--bg-panel); }
+.tab { flex: 1; padding: 12px 8px; text-align: center; color: var(--text-dim); cursor: pointer; font-size: 12px; font-weight: 500; border-bottom: 2px solid transparent; user-select: none; }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
 .layout { display: grid; grid-template-columns: 380px 1fr 460px; gap: 1px; background: var(--border); height: calc(100vh - 53px); }
-.panel { background: var(--bg-panel); overflow: auto; padding: 16px 18px; }
+.panel { background: var(--bg-panel); overflow: auto; padding: 16px 18px; -webkit-overflow-scrolling: touch; }
 .panel h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin: 0 0 12px 0; font-weight: 600; }
 .panel h2:not(:first-child) { margin-top: 24px; }
+
+/* Responsive: tabs on narrow screens */
+@media (max-width: 900px) {
+  header { padding: 12px 14px; gap: 12px; }
+  h1 { font-size: 15px; }
+  .subtitle { display: none; }
+  .stats { gap: 12px; font-size: 11px; }
+  .tabs { display: flex; }
+  .layout { grid-template-columns: 1fr; height: calc(100vh - 53px - 44px); }
+  .panel { display: none; }
+  .panel.tab-active { display: block; }
+  /* Larger tap targets on mobile */
+  .conv-row { padding: 14px 14px !important; }
+  .intent-row { padding: 8px 6px !important; }
+  .chip { padding: 6px 12px !important; font-size: 12px !important; }
+  .msg { padding: 14px 0 !important; }
+}
+@media (max-width: 480px) {
+  .stats div { font-size: 10px; }
+}
 
 /* Graph */
 #graph { width: 100%; height: 320px; background: var(--bg-panel-2); border-radius: 4px; position: relative; }
@@ -462,9 +488,15 @@ footer a:hover { color: var(--accent); }
   </div>
 </header>
 
+<div class="tabs">
+  <div class="tab active" data-tab="left">Overview</div>
+  <div class="tab" data-tab="middle">Conversations</div>
+  <div class="tab" data-tab="right">Timeline</div>
+</div>
+
 <div class="layout">
 
-  <div class="panel" id="left">
+  <div class="panel tab-active" id="left" data-panel="left">
     <h2>Inter-agent graph</h2>
     <div id="graph"></div>
 
@@ -475,14 +507,14 @@ footer a:hover { color: var(--accent); }
     <div id="agent-bars"></div>
   </div>
 
-  <div class="panel" id="middle">
+  <div class="panel" id="middle" data-panel="middle">
     <h2>Conversations</h2>
     <input class="search" id="search" placeholder="filter: e.g. payment, PR#42, sre-agent..." />
     <div class="filters" id="cat-filters"></div>
     <div class="conv-list" id="conv-list" style="margin-top: 12px;"></div>
   </div>
 
-  <div class="panel" id="right">
+  <div class="panel" id="right" data-panel="right">
     <div id="timeline">
       <div class="empty">Select a conversation to view its timeline.</div>
     </div>
@@ -674,7 +706,7 @@ function renderConvList(convs) {
     const intents = [...new Set(c.messages.map(m => m.intent))].slice(0,4).map(i => '<span class="pill" style="color:var(--'+i+')">'+i+'</span>').join('');
     row.innerHTML = '<div class="top"><span class="scenario">' + c.scenario + '</span><span class="time">' + time + '</span></div>' +
                     '<div class="bottom">' + intents + '<span style="color:var(--text-faint);margin-left:auto">' + c.messages.length + ' msgs</span></div>';
-    row.addEventListener('click', () => { state.selectedConv = c.id; state.selectedMsg = null; applyFilters(); renderTimeline(c); });
+    row.addEventListener('click', () => { state.selectedConv = c.id; state.selectedMsg = null; applyFilters(); renderTimeline(c); if (window.matchMedia('(max-width: 900px)').matches) switchTab('right'); });
     convListEl.appendChild(row);
   }
   if (convs.length > 200) {
@@ -729,6 +761,13 @@ function escapeHtml(s) { return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&l
 
 // search
 document.getElementById('search').addEventListener('input', (e) => { state.search = e.target.value; applyFilters(); });
+
+// ─ Mobile tabs ─
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('tab-active', p.dataset.panel === name));
+}
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => switchTab(t.dataset.tab)));
 
 // initial render
 applyFilters();
