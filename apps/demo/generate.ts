@@ -270,7 +270,7 @@ function detectIntent(axon: string): string {
 
 function generate(): Conversation[] {
   const conversations: Conversation[] = [];
-  const TARGET = 1000;
+  const TARGET = 200;
   const NOW = Date.now();
   const SPAN_MS = 7 * 24 * 60 * 60 * 1000; // last 7 days
 
@@ -339,7 +339,7 @@ function buildHtml(convs: Conversation[]): string {
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>AXON Trace Explorer — 1000 conversations × 10 agents</title>
+<title>AXON Trace Explorer — agent observability demo</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
 :root {
@@ -371,6 +371,11 @@ h1 { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: 0.3px; }
 .subtitle { color: var(--text-dim); font-size: 12px; }
 .stats { display: flex; gap: 18px; margin-left: auto; font-size: 12px; color: var(--text-dim); flex-wrap: wrap; }
 .stats b { color: var(--text); margin-left: 4px; }
+#js-status { font-size: 11px; padding: 2px 8px; border-radius: 100px; background: rgba(255,107,107,0.15); color: var(--ERROR); }
+html.js-ready #js-status { background: rgba(95,217,124,0.15); color: var(--COMPLETE); }
+html.js-ready #js-status::after { content: " ✓ JS ready"; }
+#js-status::after { content: "⏳ JS loading…"; }
+.noscript-warn { background: #2a1a1a; color: #ff8a8a; padding: 12px 18px; text-align: center; font-size: 13px; border-bottom: 1px solid #4a2a2a; }
 
 /* Mobile tabs */
 .tabs { display: none; border-bottom: 1px solid var(--border); background: var(--bg-panel); }
@@ -487,8 +492,16 @@ footer a:hover { color: var(--accent); }
     <div>agents<b id="stat-agents">—</b></div>
     <div>messages<b id="stat-msgs">—</b></div>
     <div>storage<b id="stat-storage">—</b></div>
+    <div id="js-status"></div>
   </div>
 </header>
+
+<noscript>
+  <div class="noscript-warn">
+    This demo needs JavaScript. The viewer you're using has scripts disabled.
+    Open the .html file in a real browser (Safari/Chrome).
+  </div>
+</noscript>
 
 <div class="tabs">
   <button type="button" class="tab active" data-tab="left">Overview</button>
@@ -708,7 +721,7 @@ function renderConvList(convs) {
     const intents = [...new Set(c.messages.map(m => m.intent))].slice(0,4).map(i => '<span class="pill" style="color:var(--'+i+')">'+i+'</span>').join('');
     row.innerHTML = '<div class="top"><span class="scenario">' + c.scenario + '</span><span class="time">' + time + '</span></div>' +
                     '<div class="bottom">' + intents + '<span style="color:var(--text-faint);margin-left:auto">' + c.messages.length + ' msgs</span></div>';
-    row.addEventListener('click', () => { state.selectedConv = c.id; state.selectedMsg = null; applyFilters(); renderTimeline(c); if (window.matchMedia('(max-width: 900px)').matches) switchTab('right'); });
+    row.addEventListener('click', () => { state.selectedConv = c.id; state.selectedMsg = null; applyFilters(); renderTimeline(c); if ((window.matchMedia ? window.matchMedia('(max-width: 900px)').matches : window.innerWidth <= 900)) switchTab('right'); });
     convListEl.appendChild(row);
   }
   if (convs.length > 200) {
@@ -764,18 +777,34 @@ function escapeHtml(s) { return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&l
 // search
 document.getElementById('search').addEventListener('input', (e) => { state.search = e.target.value; applyFilters(); });
 
-// ─ Mobile tabs (event delegation, works on every browser including iOS Safari) ─
+// ─ Mobile tabs ─ event delegation + explicit display fallback for previewers
+// that ignore @media display rules
 function switchTab(name) {
+  const mobile = (window.matchMedia ? window.matchMedia('(max-width: 900px)').matches : window.innerWidth <= 900);
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
-  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('tab-active', p.dataset.panel === name));
-  // ensure user sees the panel content from the top
+  document.querySelectorAll('.panel').forEach(p => {
+    const isActive = p.dataset.panel === name;
+    p.classList.toggle('tab-active', isActive);
+    if (mobile) p.style.display = isActive ? 'block' : 'none';
+    else p.style.display = '';
+  });
   const panel = document.querySelector('.panel.tab-active');
   if (panel) panel.scrollTop = 0;
 }
 document.addEventListener('click', (e) => {
-  const tab = e.target.closest && e.target.closest('.tab');
-  if (tab && tab.dataset.tab) switchTab(tab.dataset.tab);
+  const t = e.target;
+  const tab = (t && t.closest) ? t.closest('.tab') : null;
+  if (tab && tab.dataset && tab.dataset.tab) {
+    e.preventDefault();
+    switchTab(tab.dataset.tab);
+  }
 });
+// initial display state for mobile previewers that ignore @media
+if ((window.matchMedia ? window.matchMedia('(max-width: 900px)').matches : window.innerWidth <= 900)) {
+  document.querySelectorAll('.panel').forEach(p => { p.style.display = p.classList.contains('tab-active') ? 'block' : 'none'; });
+}
+// mark JS as alive (so a noscript fallback / status indicator can react)
+document.documentElement.classList.add('js-ready');
 
 // initial render
 applyFilters();
