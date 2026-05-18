@@ -1,0 +1,13 @@
+{
+  "name": "@axon/demo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate": "tsx generate.ts"
+  },
+  "dependencies": {
+    "@axon/codec": "workspace:*",
+    "@axon/core": "workspace:*"
+  }
+}
