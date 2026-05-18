@@ -1,0 +1,1447 @@
+{
+  "test": "entity_preservation",
+  "n": 30,
+  "macro": {
+    "numbers": 0.8840579710144927,
+    "ids": 0.45535714285714285,
+    "intent": 0.4,
+    "qualifiers": 0.24935897435897433,
+    "overall": 0.48500000000000004
+  },
+  "rows": [
+    {
+      "id": "qm-01",
+      "category": "delegation",
+      "nl": "Please delegate the code review of pull request 42 to the security-agent. Make sure all 47 tests pass before approving.",
+      "axon": "→ @security- ⟦dele cr PR 42 Make sure 47 tests pass approving⟧",
+      "numberRecall": 1,
+      "idRecall": 0.5,
+      "intentHit": true,
+      "qualifierRecall": 0,
+      "overallRecall": 0.625,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            42,
+            47
+          ],
+          "matched": [
+            "42",
+            "47"
+          ],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "security-agent",
+            "PR"
+          ],
+          "matched": [
+            "PR"
+          ],
+          "missed": [
+            "security-agent"
+          ]
+        },
+        "intent": {
+          "wanted": "delegate",
+          "matched": true,
+          "foundSymbol": "→"
+        },
+        "qualifiers": {
+          "wanted": [
+            "all",
+            "before"
+          ],
+          "matched": [],
+          "missed": [
+            "all",
+            "before"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-02",
+      "category": "error",
+      "nl": "The payment service returned a 500 error after a 30-second timeout. Retrying with exponential backoff, maximum 5 attempts.",
+      "axon": "⊗ ⟦pay svc retu 500 error 30-second T/O retry expbkf max 5 attempts⟧",
+      "numberRecall": 1,
+      "idRecall": 0,
+      "intentHit": true,
+      "qualifierRecall": 1,
+      "overallRecall": 0.75,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            500,
+            30,
+            5
+          ],
+          "matched": [
+            "500",
+            "30",
+            "5"
+          ],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "payment"
+          ],
+          "matched": [],
+          "missed": [
+            "payment"
+          ]
+        },
+        "intent": {
+          "wanted": "error",
+          "matched": true,
+          "foundSymbol": "⊗"
+        },
+        "qualifiers": {
+          "wanted": [
+            "maximum",
+            "exponential"
+          ],
+          "matched": [
+            "maximum",
+            "exponential"
+          ],
+          "missed": []
+        }
+      }
+    },
+    {
+      "id": "qm-03",
+      "category": "completion",
+      "nl": "Deployment complete. All 12 microservices are running on the production Kubernetes cluster, all health checks passing.",
+      "axon": "! ⟦depl complete 12 svcs runn prod k8s clu hchks pass⟧",
+      "numberRecall": 1,
+      "idRecall": 0,
+      "intentHit": false,
+      "qualifierRecall": 0,
+      "overallRecall": 0.25,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            12
+          ],
+          "matched": [
+            "12"
+          ],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "production",
+            "kubernetes"
+          ],
+          "matched": [],
+          "missed": [
+            "production",
+            "kubernetes"
+          ]
+        },
+        "intent": {
+          "wanted": "complete",
+          "matched": false
+        },
+        "qualifiers": {
+          "wanted": [
+            "all"
+          ],
+          "matched": [],
+          "missed": [
+            "all"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-04",
+      "category": "query",
+      "nl": "What is the current status of the user-service in the eu-west-1 region?",
+      "axon": "? ⟦curr status user-svc eu-west-1 region⟧",
+      "numberRecall": null,
+      "idRecall": 1,
+      "intentHit": true,
+      "qualifierRecall": null,
+      "overallRecall": 1,
+      "hits": {
+        "numbers": {
+          "wanted": [],
+          "matched": [],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "user-service",
+            "eu-west-1"
+          ],
+          "matched": [
+            "user-service",
+            "eu-west-1"
+          ],
+          "missed": []
+        },
+        "intent": {
+          "wanted": "query",
+          "matched": true,
+          "foundSymbol": "?"
+        },
+        "qualifiers": {
+          "wanted": [],
+          "matched": [],
+          "missed": []
+        }
+      }
+    },
+    {
+      "id": "qm-05",
+      "category": "urgent",
+      "nl": "URGENT: The primary load balancer is unresponsive. All traffic affected. Immediate infrastructure team action required.",
+      "axon": "⚡ ⟦URGENT prim lb unresponsive traf affected Imme infra team action required⟧",
+      "numberRecall": null,
+      "idRecall": 0,
+      "intentHit": true,
+      "qualifierRecall": 0.6666666666666666,
+      "overallRecall": 0.5555555555555555,
+      "hits": {
+        "numbers": {
+          "wanted": [],
+          "matched": [],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "load balancer",
+            "infrastructure"
+          ],
+          "matched": [],
+          "missed": [
+            "load balancer",
+            "infrastructure"
+          ]
+        },
+        "intent": {
+          "wanted": "urgent",
+          "matched": true,
+          "foundSymbol": "⚡"
+        },
+        "qualifiers": {
+          "wanted": [
+            "primary",
+            "all",
+            "immediate"
+          ],
+          "matched": [
+            "primary",
+            "immediate"
+          ],
+          "missed": [
+            "all"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-06",
+      "category": "inform-quantified",
+      "nl": "Database query complete: 1247 records matched the filter criteria, 3 were excluded as malformed.",
+      "axon": "! ⟦db query complete 1247 recs matc filt criteria 3 excl as malformed⟧",
+      "numberRecall": 1,
+      "idRecall": 0,
+      "intentHit": false,
+      "qualifierRecall": null,
+      "overallRecall": 0.3333333333333333,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            1247,
+            3
+          ],
+          "matched": [
+            "1247",
+            "3"
+          ],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "database"
+          ],
+          "matched": [],
+          "missed": [
+            "database"
+          ]
+        },
+        "intent": {
+          "wanted": "inform",
+          "matched": false
+        },
+        "qualifiers": {
+          "wanted": [],
+          "matched": [],
+          "missed": []
+        }
+      }
+    },
+    {
+      "id": "qm-07",
+      "category": "conditional",
+      "nl": "If the test suite passes for all 24 services, proceed to deploy to staging. Otherwise, report failures back to the orchestrator.",
+      "axon": "≡ ⟦tstste passes 24 svcs proc depl staging Otherwise report fail orch⟧",
+      "numberRecall": 1,
+      "idRecall": 0.5,
+      "intentHit": false,
+      "qualifierRecall": 0.3333333333333333,
+      "overallRecall": 0.4583333333333333,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            24
+          ],
+          "matched": [
+            "24"
+          ],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "staging",
+            "orchestrator"
+          ],
+          "matched": [
+            "staging"
+          ],
+          "missed": [
+            "orchestrator"
+          ]
+        },
+        "intent": {
+          "wanted": "request",
+          "matched": false
+        },
+        "qualifiers": {
+          "wanted": [
+            "if",
+            "otherwise",
+            "all"
+          ],
+          "matched": [
+            "otherwise"
+          ],
+          "missed": [
+            "if",
+            "all"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-08",
+      "category": "qualified-error",
+      "nl": "We noticed that the auth-service only fails for EU users, and only during peak hours. It might be rate limiting.",
+      "axon": "! ⟦noti auth-svc fails EU users peak hours rlim⟧",
+      "numberRecall": null,
+      "idRecall": 1,
+      "intentHit": false,
+      "qualifierRecall": 0,
+      "overallRecall": 0.3333333333333333,
+      "hits": {
+        "numbers": {
+          "wanted": [],
+          "matched": [],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "auth-service",
+            "EU"
+          ],
+          "matched": [
+            "auth-service",
+            "EU"
+          ],
+          "missed": []
+        },
+        "intent": {
+          "wanted": "inform",
+          "matched": false
+        },
+        "qualifiers": {
+          "wanted": [
+            "only",
+            "only",
+            "might",
+            "noticed"
+          ],
+          "matched": [],
+          "missed": [
+            "only",
+            "only",
+            "might",
+            "noticed"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-09",
+      "category": "batch-request",
+      "nl": "Dispatch batch job to all 8 worker agents: scrape the top 10 results per keyword and return structured data.",
+      "axon": "! ⟦Disp batch job 8 wagts scrape top 10 res keyw return sdata⟧",
+      "numberRecall": 1,
+      "idRecall": 0,
+      "intentHit": true,
+      "qualifierRecall": 0.5,
+      "overallRecall": 0.625,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            8,
+            10
+          ],
+          "matched": [
+            "8",
+            "10"
+          ],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "worker"
+          ],
+          "matched": [],
+          "missed": [
+            "worker"
+          ]
+        },
+        "intent": {
+          "wanted": "request",
+          "matched": true,
+          "foundSymbol": "!"
+        },
+        "qualifiers": {
+          "wanted": [
+            "all",
+            "top"
+          ],
+          "matched": [
+            "top"
+          ],
+          "missed": [
+            "all"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-10",
+      "category": "filter-aggregate",
+      "nl": "Fetch records from users-db where status equals pending and created_at is less than 30 days, then aggregate by region.",
+      "axon": "? ⟦Fetch recs users-db status equals pend created_at 30 days agg region⟧",
+      "numberRecall": 1,
+      "idRecall": 0.5,
+      "intentHit": false,
+      "qualifierRecall": 0,
+      "overallRecall": 0.375,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            30
+          ],
+          "matched": [
+            "30"
+          ],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "users-db",
+            "pending"
+          ],
+          "matched": [
+            "users-db"
+          ],
+          "missed": [
+            "pending"
+          ]
+        },
+        "intent": {
+          "wanted": "request",
+          "matched": false
+        },
+        "qualifiers": {
+          "wanted": [
+            "less than"
+          ],
+          "matched": [],
+          "missed": [
+            "less than"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-11",
+      "category": "confirm",
+      "nl": "Acknowledged. Proceeding with the rollback to version 2.4.1 on the api-gateway service.",
+      "axon": "✓ ⟦Acknowledged Pro rback vers 241 api-gateway svc⟧",
+      "numberRecall": 0,
+      "idRecall": 1,
+      "intentHit": true,
+      "qualifierRecall": null,
+      "overallRecall": 0.6666666666666666,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            "2.4.1"
+          ],
+          "matched": [],
+          "missed": [
+            "2.4.1"
+          ]
+        },
+        "ids": {
+          "wanted": [
+            "api-gateway"
+          ],
+          "matched": [
+            "api-gateway"
+          ],
+          "missed": []
+        },
+        "intent": {
+          "wanted": "confirm",
+          "matched": true,
+          "foundSymbol": "✓"
+        },
+        "qualifiers": {
+          "wanted": [],
+          "matched": [],
+          "missed": []
+        }
+      }
+    },
+    {
+      "id": "qm-12",
+      "category": "reject",
+      "nl": "Cannot approve the merge. Pull request 88 has 3 unresolved comments and 2 failing CI checks.",
+      "axon": "⊕ ⟦Cannot appr merge PR 88 3 unr comm 2 fail CI checks⟧",
+      "numberRecall": 1,
+      "idRecall": 1,
+      "intentHit": false,
+      "qualifierRecall": 0,
+      "overallRecall": 0.5,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            88,
+            3,
+            2
+          ],
+          "matched": [
+            "88",
+            "3",
+            "2"
+          ],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "PR",
+            "CI"
+          ],
+          "matched": [
+            "PR",
+            "CI"
+          ],
+          "missed": []
+        },
+        "intent": {
+          "wanted": "reject",
+          "matched": false
+        },
+        "qualifiers": {
+          "wanted": [
+            "unresolved",
+            "failing"
+          ],
+          "matched": [],
+          "missed": [
+            "unresolved",
+            "failing"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-13",
+      "category": "merge-results",
+      "nl": "Combine the outputs from worker-1, worker-2, and worker-3 into a single aggregated report.",
+      "axon": "⊕ ⟦Comb outp wkr-1 wkr-2 wkr-3 single agg report⟧",
+      "numberRecall": 1,
+      "idRecall": 0,
+      "intentHit": true,
+      "qualifierRecall": null,
+      "overallRecall": 0.6666666666666666,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            1,
+            2,
+            3
+          ],
+          "matched": [
+            "1",
+            "2",
+            "3"
+          ],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "worker-1",
+            "worker-2",
+            "worker-3"
+          ],
+          "matched": [],
+          "missed": [
+            "worker-1",
+            "worker-2",
+            "worker-3"
+          ]
+        },
+        "intent": {
+          "wanted": "merge",
+          "matched": true,
+          "foundSymbol": "⊕"
+        },
+        "qualifiers": {
+          "wanted": [],
+          "matched": [],
+          "missed": []
+        }
+      }
+    },
+    {
+      "id": "qm-14",
+      "category": "retry",
+      "nl": "Retry the failed payment transaction for user 88421 using the secondary processor.",
+      "axon": "⊗ ⟦retry fail pay txn user 88421 seco processor⟧",
+      "numberRecall": 1,
+      "idRecall": 0,
+      "intentHit": false,
+      "qualifierRecall": 0,
+      "overallRecall": 0.25,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            88421
+          ],
+          "matched": [
+            "88421"
+          ],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "payment",
+            "secondary"
+          ],
+          "matched": [],
+          "missed": [
+            "payment",
+            "secondary"
+          ]
+        },
+        "intent": {
+          "wanted": "retry",
+          "matched": false
+        },
+        "qualifiers": {
+          "wanted": [
+            "failed"
+          ],
+          "matched": [],
+          "missed": [
+            "failed"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-15",
+      "category": "timeout-constraint",
+      "nl": "Query the inventory service, but timeout after 5 seconds if no response.",
+      "axon": "! ⟦Query inve svc T/O 5 s rsp⟧",
+      "numberRecall": 1,
+      "idRecall": 0,
+      "intentHit": false,
+      "qualifierRecall": 0,
+      "overallRecall": 0.25,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            5
+          ],
+          "matched": [
+            "5"
+          ],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "inventory"
+          ],
+          "matched": [],
+          "missed": [
+            "inventory"
+          ]
+        },
+        "intent": {
+          "wanted": "query",
+          "matched": false
+        },
+        "qualifiers": {
+          "wanted": [
+            "after",
+            "if no response"
+          ],
+          "matched": [],
+          "missed": [
+            "after",
+            "if no response"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-16",
+      "category": "scope-local",
+      "nl": "Update the local cache only. Do not propagate the change to other nodes yet.",
+      "axon": "! Update local cache only prop change nodes yet",
+      "numberRecall": null,
+      "idRecall": 1,
+      "intentHit": true,
+      "qualifierRecall": 0.6666666666666666,
+      "overallRecall": 0.8888888888888888,
+      "hits": {
+        "numbers": {
+          "wanted": [],
+          "matched": [],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "cache"
+          ],
+          "matched": [
+            "cache"
+          ],
+          "missed": []
+        },
+        "intent": {
+          "wanted": "request",
+          "matched": true,
+          "foundSymbol": "!"
+        },
+        "qualifiers": {
+          "wanted": [
+            "only",
+            "not",
+            "yet"
+          ],
+          "matched": [
+            "only",
+            "yet"
+          ],
+          "missed": [
+            "not"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-17",
+      "category": "existential-check",
+      "nl": "Check if any of the worker pods are in CrashLoopBackOff state.",
+      "axon": "! Check wkr pods Cra state",
+      "numberRecall": null,
+      "idRecall": 0,
+      "intentHit": false,
+      "qualifierRecall": 0,
+      "overallRecall": 0,
+      "hits": {
+        "numbers": {
+          "wanted": [],
+          "matched": [],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "worker",
+            "CrashLoopBackOff"
+          ],
+          "matched": [],
+          "missed": [
+            "worker",
+            "CrashLoopBackOff"
+          ]
+        },
+        "intent": {
+          "wanted": "query",
+          "matched": false
+        },
+        "qualifiers": {
+          "wanted": [
+            "any"
+          ],
+          "matched": [],
+          "missed": [
+            "any"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-18",
+      "category": "null-result",
+      "nl": "Search returned no matching records for the customer ID c-44291.",
+      "axon": "! ⟦Search retu matc recs cust ID c-44291⟧",
+      "numberRecall": 1,
+      "idRecall": 0,
+      "intentHit": false,
+      "qualifierRecall": 0,
+      "overallRecall": 0.25,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            "c-44291"
+          ],
+          "matched": [
+            "c-44291"
+          ],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "customer"
+          ],
+          "matched": [],
+          "missed": [
+            "customer"
+          ]
+        },
+        "intent": {
+          "wanted": "inform",
+          "matched": false
+        },
+        "qualifiers": {
+          "wanted": [
+            "no"
+          ],
+          "matched": [],
+          "missed": [
+            "no"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-19",
+      "category": "comparison",
+      "nl": "Latency on the search endpoint is greater than 500ms. Threshold breached.",
+      "axon": "! ⟦lat search endp grea 500ms thr breached⟧",
+      "numberRecall": 1,
+      "idRecall": 1,
+      "intentHit": false,
+      "qualifierRecall": 0.5,
+      "overallRecall": 0.625,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            500
+          ],
+          "matched": [
+            "500"
+          ],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "search"
+          ],
+          "matched": [
+            "search"
+          ],
+          "missed": []
+        },
+        "intent": {
+          "wanted": "inform",
+          "matched": false
+        },
+        "qualifiers": {
+          "wanted": [
+            "greater than",
+            "breached"
+          ],
+          "matched": [
+            "breached"
+          ],
+          "missed": [
+            "greater than"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-20",
+      "category": "multi-clause",
+      "nl": "Restart the metrics-collector on hosts host-01 and host-02, then verify Prometheus scraping resumes within 60 seconds.",
+      "axon": "? ⟦rst metrics-collector hosts host-01 host-02 ver Pro scra resu 60 s⟧",
+      "numberRecall": 1,
+      "idRecall": 0.75,
+      "intentHit": false,
+      "qualifierRecall": 0,
+      "overallRecall": 0.4375,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            "01",
+            "02",
+            60
+          ],
+          "matched": [
+            "01",
+            "02",
+            "60"
+          ],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "metrics-collector",
+            "host-01",
+            "host-02",
+            "Prometheus"
+          ],
+          "matched": [
+            "metrics-collector",
+            "host-01",
+            "host-02"
+          ],
+          "missed": [
+            "Prometheus"
+          ]
+        },
+        "intent": {
+          "wanted": "request",
+          "matched": false
+        },
+        "qualifiers": {
+          "wanted": [
+            "within"
+          ],
+          "matched": [],
+          "missed": [
+            "within"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-21",
+      "category": "long-causal",
+      "nl": "The deployment to staging failed because the database migration timed out after 120 seconds, which caused the readiness probe to fail, which triggered a rollback to the previous version.",
+      "axon": "⊗ ⟦depl stag fail beca db migr timed 120 s caused read probe fail trig rback prev version⟧",
+      "numberRecall": 1,
+      "idRecall": 0,
+      "intentHit": true,
+      "qualifierRecall": 0.25,
+      "overallRecall": 0.5625,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            120
+          ],
+          "matched": [
+            "120"
+          ],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "staging",
+            "database"
+          ],
+          "matched": [],
+          "missed": [
+            "staging",
+            "database"
+          ]
+        },
+        "intent": {
+          "wanted": "error",
+          "matched": true,
+          "foundSymbol": "⊗"
+        },
+        "qualifiers": {
+          "wanted": [
+            "because",
+            "after",
+            "caused",
+            "triggered"
+          ],
+          "matched": [
+            "caused"
+          ],
+          "missed": [
+            "because",
+            "after",
+            "triggered"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-22",
+      "category": "ambiguous-pronoun",
+      "nl": "Send the report to the orchestrator before it expires.",
+      "axon": "≡ report orch expires",
+      "numberRecall": null,
+      "idRecall": 0,
+      "intentHit": false,
+      "qualifierRecall": 0,
+      "overallRecall": 0,
+      "hits": {
+        "numbers": {
+          "wanted": [],
+          "matched": [],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "orchestrator"
+          ],
+          "matched": [],
+          "missed": [
+            "orchestrator"
+          ]
+        },
+        "intent": {
+          "wanted": "request",
+          "matched": false
+        },
+        "qualifiers": {
+          "wanted": [
+            "before"
+          ],
+          "matched": [],
+          "missed": [
+            "before"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-23",
+      "category": "hedged-finding",
+      "nl": "Preliminary analysis suggests that approximately 15 percent of requests are timing out, but we need more samples to confirm.",
+      "axon": "✓ ⟦Pre anl sugg ~ 15 pct reqs timing out samp confirm⟧",
+      "numberRecall": 1,
+      "idRecall": null,
+      "intentHit": false,
+      "qualifierRecall": 0.4,
+      "overallRecall": 0.4666666666666666,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            15
+          ],
+          "matched": [
+            "15"
+          ],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [],
+          "matched": [],
+          "missed": []
+        },
+        "intent": {
+          "wanted": "inform",
+          "matched": false
+        },
+        "qualifiers": {
+          "wanted": [
+            "preliminary",
+            "suggests",
+            "approximately",
+            "more samples",
+            "confirm"
+          ],
+          "matched": [
+            "approximately",
+            "confirm"
+          ],
+          "missed": [
+            "preliminary",
+            "suggests",
+            "more samples"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-24",
+      "category": "negation",
+      "nl": "Do not deploy to production until the security audit has passed.",
+      "axon": "! depl prod until sec audit passed",
+      "numberRecall": null,
+      "idRecall": 0,
+      "intentHit": true,
+      "qualifierRecall": 0.5,
+      "overallRecall": 0.5,
+      "hits": {
+        "numbers": {
+          "wanted": [],
+          "matched": [],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "production"
+          ],
+          "matched": [],
+          "missed": [
+            "production"
+          ]
+        },
+        "intent": {
+          "wanted": "request",
+          "matched": true,
+          "foundSymbol": "!"
+        },
+        "qualifiers": {
+          "wanted": [
+            "not",
+            "until"
+          ],
+          "matched": [
+            "until"
+          ],
+          "missed": [
+            "not"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-25",
+      "category": "metric-window",
+      "nl": "Error rate over the last 15 minutes is 4.2 percent, up from 0.3 percent over the prior hour.",
+      "axon": "⊗ ⟦Error rate last 15 min 42 pct 03 pct prior hour⟧",
+      "numberRecall": 0.3333333333333333,
+      "idRecall": null,
+      "intentHit": false,
+      "qualifierRecall": 0.3333333333333333,
+      "overallRecall": 0.2222222222222222,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            15,
+            4.2,
+            0.3
+          ],
+          "matched": [
+            "15"
+          ],
+          "missed": [
+            4.2,
+            0.3
+          ]
+        },
+        "ids": {
+          "wanted": [],
+          "matched": [],
+          "missed": []
+        },
+        "intent": {
+          "wanted": "inform",
+          "matched": false
+        },
+        "qualifiers": {
+          "wanted": [
+            "over",
+            "up from",
+            "prior"
+          ],
+          "matched": [
+            "prior"
+          ],
+          "missed": [
+            "over",
+            "up from"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-26",
+      "category": "version-bump",
+      "nl": "Upgrade the redis-cluster from version 6.2.7 to 7.0.5 during the maintenance window starting at 02:00 UTC.",
+      "axon": "! ⟦Upgr redis-clu vers 627 705 mai window star 0200 UTC⟧",
+      "numberRecall": 0,
+      "idRecall": 0.5,
+      "intentHit": true,
+      "qualifierRecall": 0,
+      "overallRecall": 0.375,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            "6.2.7",
+            "7.0.5",
+            "02:00"
+          ],
+          "matched": [],
+          "missed": [
+            "6.2.7",
+            "7.0.5",
+            "02:00"
+          ]
+        },
+        "ids": {
+          "wanted": [
+            "redis-cluster",
+            "UTC"
+          ],
+          "matched": [
+            "UTC"
+          ],
+          "missed": [
+            "redis-cluster"
+          ]
+        },
+        "intent": {
+          "wanted": "request",
+          "matched": true,
+          "foundSymbol": "!"
+        },
+        "qualifiers": {
+          "wanted": [
+            "during"
+          ],
+          "matched": [],
+          "missed": [
+            "during"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-27",
+      "category": "permission",
+      "nl": "User u-9921 does not have permission to access the billing-service endpoint /admin/refunds.",
+      "axon": "! ⟦User u-9921 per access billing-svc endp /admin/refunds⟧",
+      "numberRecall": 1,
+      "idRecall": 1,
+      "intentHit": false,
+      "qualifierRecall": 0,
+      "overallRecall": 0.5,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            "u-9921"
+          ],
+          "matched": [
+            "u-9921"
+          ],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "billing-service",
+            "/admin/refunds"
+          ],
+          "matched": [
+            "billing-service",
+            "/admin/refunds"
+          ],
+          "missed": []
+        },
+        "intent": {
+          "wanted": "reject",
+          "matched": false
+        },
+        "qualifiers": {
+          "wanted": [
+            "not"
+          ],
+          "matched": [],
+          "missed": [
+            "not"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-28",
+      "category": "rate-limit",
+      "nl": "Rate limit reached for tenant t-5544: 1000 requests per minute exceeded. Throttling for next 60 seconds.",
+      "axon": "! ⟦rlim reac tenant t-5544 1000 reqs minute exceeded Thr 60 s⟧",
+      "numberRecall": 1,
+      "idRecall": 1,
+      "intentHit": false,
+      "qualifierRecall": 0.5,
+      "overallRecall": 0.625,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            "t-5544",
+            1000,
+            60
+          ],
+          "matched": [
+            "t-5544",
+            "1000",
+            "60"
+          ],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "tenant"
+          ],
+          "matched": [
+            "tenant"
+          ],
+          "missed": []
+        },
+        "intent": {
+          "wanted": "inform",
+          "matched": false
+        },
+        "qualifiers": {
+          "wanted": [
+            "exceeded",
+            "next"
+          ],
+          "matched": [
+            "exceeded"
+          ],
+          "missed": [
+            "next"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-29",
+      "category": "chained-deps",
+      "nl": "Worker-7 cannot proceed because worker-4 has not yet produced output, which depends on the queue-consumer finishing batch 33.",
+      "axon": "? ⟦wkr-7 cannot proc beca wkr-4 yet prod output depe queue-consumer fini batch 33⟧",
+      "numberRecall": 1,
+      "idRecall": 1,
+      "intentHit": false,
+      "qualifierRecall": 0.3333333333333333,
+      "overallRecall": 0.5833333333333334,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            7,
+            4,
+            33
+          ],
+          "matched": [
+            "7",
+            "4",
+            "33"
+          ],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "queue-consumer"
+          ],
+          "matched": [
+            "queue-consumer"
+          ],
+          "missed": []
+        },
+        "intent": {
+          "wanted": "inform",
+          "matched": false
+        },
+        "qualifiers": {
+          "wanted": [
+            "because",
+            "not yet",
+            "depends on"
+          ],
+          "matched": [
+            "depends on"
+          ],
+          "missed": [
+            "because",
+            "not yet"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qm-30",
+      "category": "approval-required",
+      "nl": "Deployment proposal ready for review. 3 reviewers must approve before this can proceed: alice, bob, carol.",
+      "axon": "! ⟦depl prop ready review 3 revi must appr proceed alice bob carol⟧",
+      "numberRecall": 1,
+      "idRecall": 1,
+      "intentHit": true,
+      "qualifierRecall": 0.5,
+      "overallRecall": 0.875,
+      "hits": {
+        "numbers": {
+          "wanted": [
+            3
+          ],
+          "matched": [
+            "3"
+          ],
+          "missed": []
+        },
+        "ids": {
+          "wanted": [
+            "alice",
+            "bob",
+            "carol"
+          ],
+          "matched": [
+            "alice",
+            "bob",
+            "carol"
+          ],
+          "missed": []
+        },
+        "intent": {
+          "wanted": "request",
+          "matched": true,
+          "foundSymbol": "!"
+        },
+        "qualifiers": {
+          "wanted": [
+            "must",
+            "before"
+          ],
+          "matched": [
+            "must"
+          ],
+          "missed": [
+            "before"
+          ]
+        }
+      }
+    }
+  ]
+}

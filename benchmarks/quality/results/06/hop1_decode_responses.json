@@ -1,0 +1,42 @@
+[
+  {
+    "id": "th-01-m0",
+    "decoded": "Information: Alert that the payment service is returning HTTP 500 errors as of 14:32 UTC. The error rate is 82 percent."
+  },
+  {
+    "id": "th-01-m1",
+    "decoded": "Confirmation from the SRE agent: Acknowledged. Delegating diagnosis. Setting priority to P1."
+  },
+  {
+    "id": "th-02-m0",
+    "decoded": "Request: Start the nightly ETL run with job id etl-2456. The source is the Postgres replica-2 and the target is the warehouse."
+  },
+  {
+    "id": "th-02-m1",
+    "decoded": "Request: Extract 4,200,000 rows from the orders table. Skip 14 corrupted rows."
+  },
+  {
+    "id": "th-03-m0",
+    "decoded": "Request: Build sec-build-553 is complete. Static analysis flagged 3 medium-severity results in the auth-handler module."
+  },
+  {
+    "id": "th-03-m1",
+    "decoded": "Request to the security agent: Delegate triage; the severity threshold for blocking is high and above."
+  },
+  {
+    "id": "th-04-m0",
+    "decoded": "Request: Latency for us-east-1 clients in eu-central-1 spiked to 380 milliseconds, exceeding the threshold of 200."
+  },
+  {
+    "id": "th-04-m1",
+    "decoded": "Request: Confirm failover. Current traffic on us-east-1 is 12,000 requests per second."
+  },
+  {
+    "id": "th-05-m0",
+    "decoded": "Request: Start the training run train-9911 for model gpt-medium-v3. The dataset is combined-v7 with 12,000,000 examples."
+  },
+  {
+    "id": "th-05-m1",
+    "decoded": "Request: Optimizer is AdamW with learning rate 2e-5 and weight decay 0.01. Batch size is 32, using 8 GPUs."
+  }
+]

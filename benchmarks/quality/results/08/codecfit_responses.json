@@ -1,0 +1,17 @@
+[
+  {"id": "t-01", "response": "DONE @orch [[deploy:prod && svc[8]:run && hchk:pass]]"},
+  {"id": "t-02", "response": "! @security-agent [[rev PR#217 <: tst:pass -> OK]]"},
+  {"id": "t-03", "response": "ERR pay.svc:T/O<<30s>> -> RPT expbkf<<max:5>>"},
+  {"id": "t-04", "response": "? @inventory.svc [[status]] T/O<<5s>>"},
+  {"id": "t-05", "response": "!! @infra [[lb:unresp && traffic:_]] -> esc"},
+  {"id": "t-06", "response": "! @worker[12] [[scrape <: top:10 | kw:assign]] | @aggregator"},
+  {"id": "t-07", "response": "== @orch [[db.q:5841 && malformed:22 -> excl]]"},
+  {"id": "t-08", "response": "NO merge PR#99 <<rev.cmt:2 && ci:fail#1>>"},
+  {"id": "t-09", "response": "OK [[rollback @auth-gateway : v3.1.4]]"},
+  {"id": "t-10", "response": "RPT tx<<user:u-44291>> | proc:secondary"},
+  {"id": "t-11", "response": "== [[err.rate:6.5% <<10m>> && prior:0.4% <<1h>>]]"},
+  {"id": "t-12", "response": "! [[deploy:prod NO -> sec.audit:pass]]"},
+  {"id": "t-13", "response": "== [[auth.svc:fail <: region:EU && time:peak]] # hyp:ratelimit"},
+  {"id": "t-14", "response": "SUM @orch [[worker-1 +> worker-2 +> worker-3]]"},
+  {"id": "t-15", "response": "OK [[ratelimit <<tenant:t-9921>> : 1000rpm >= excd -> throttle<<60s>>]]"}
+]

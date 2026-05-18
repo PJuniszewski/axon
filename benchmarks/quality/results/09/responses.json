@@ -1,0 +1,17 @@
+[
+  {"id": "ad-01", "decoded": "REFUSE", "confidence": 2, "issue": "unbalanced delimiter and unknown symbol"},
+  {"id": "ad-02", "decoded": "REFUSE", "confidence": 2, "issue": "mismatched delimiter and non-codebook symbols"},
+  {"id": "ad-03", "decoded": "REFUSE", "confidence": 1, "issue": "unknown intent symbol"},
+  {"id": "ad-04", "decoded": "REFUSE", "confidence": 3, "issue": "unknown symbol after urgent marker"},
+  {"id": "ad-05", "decoded": "REFUSE", "confidence": 1, "issue": "unknown intent and empty payload"},
+  {"id": "ad-06", "decoded": "REFUSE", "confidence": 0, "issue": "non-codebook symbols only"},
+  {"id": "ad-07", "decoded": "REFUSE", "confidence": 1, "issue": "unknown intent symbol"},
+  {"id": "ad-08", "decoded": "Delegate to unspecified agent: review pull request 42", "confidence": 4, "issue": "missing agent name after @"},
+  {"id": "ad-09", "decoded": "REFUSE", "confidence": 3, "issue": "negation operator not in codebook"},
+  {"id": "ad-10", "decoded": "REFUSE", "confidence": 2, "issue": "circular delegation, no intent"},
+  {"id": "ad-11", "decoded": "REFUSE", "confidence": 0, "issue": "empty input"},
+  {"id": "ad-12", "decoded": "REFUSE", "confidence": 0, "issue": "whitespace only"},
+  {"id": "ad-13", "decoded": "REFUSE", "confidence": 1, "issue": "natural language, not AXON"},
+  {"id": "ad-14", "decoded": "REFUSE", "confidence": 1, "issue": "unknown intent symbol and NaN value"},
+  {"id": "ad-15", "decoded": "REFUSE", "confidence": 2, "issue": "non-existent agent and empty query"}
+]

@@ -1,0 +1,22 @@
+[
+  {"id": "r-01", "reasoning": "Initial 47 tokens plus 3 retries of 12 tokens each: 47 + 36 = 83.", "answer": "83"},
+  {"id": "r-02", "reasoning": "Passed = 240 - 18 = 222. Percentage = 222/240 = 0.925 = 92.5%.", "answer": "92.5"},
+  {"id": "r-03", "reasoning": "21 tasks / 3 workers = 7 tasks each in parallel. 7 * 8 min = 56 min.", "answer": "56"},
+  {"id": "r-04", "reasoning": "30 days * 24 * 60 = 43200 min. Downtime = 0.5% = 0.005 * 43200 = 216 min.", "answer": "216"},
+  {"id": "r-05", "reasoning": "A rate = 1/4, B rate = 1/6 (50% slower means 6 min). Combined = 5/12 tasks/min. 14 / (5/12) = 33.6 min.", "answer": "33.6"},
+  {"id": "r-06", "reasoning": "Net drain = 80 - 50 = 30 msg/sec. 1000/30 = 33.33 sec.", "answer": "33.33"},
+  {"id": "r-07", "reasoning": "Extract=5, Transform=1.5, Load=3. Sum=9.5. Add 15% overhead: 9.5*1.15 = 10.925 min.", "answer": "10.925"},
+  {"id": "r-08", "reasoning": "Binomial(5,0.7), P(X>=3) = P(3)+P(4)+P(5) = 0.3087+0.36015+0.16807 = 0.83692 ≈ 0.84.", "answer": "0.84"},
+  {"id": "r-09", "reasoning": "Worker 2 has 40 tasks. Rate = 20/hr. 40/20 = 2 hours.", "answer": "2"},
+  {"id": "r-10", "reasoning": "0.92^4 = 0.71639296 = 71.6%.", "answer": "71.6"},
+  {"id": "r-11", "reasoning": "Limit 600 - used 540 = 60 more requests available in window.", "answer": "60"},
+  {"id": "r-12", "reasoning": "Independent AND: 0.9 * 0.85 = 0.765.", "answer": "0.765"},
+  {"id": "r-13", "reasoning": "12 * (1 - 0.25) = 12 * 0.75 = 9 nodes.", "answer": "9"},
+  {"id": "r-14", "reasoning": "500/8 = 62.5, round up to 63 tasks max per worker. 63 * 2 = 126 min.", "answer": "126"},
+  {"id": "r-15", "reasoning": "Available = 1,000,000 - 148 = 999,852. Per message = 230. 999852/230 = 4347.18, floor = 4347.", "answer": "4347"},
+  {"id": "r-16", "reasoning": "(20 - 4)/20 = 16/20 = 80%.", "answer": "80"},
+  {"id": "r-17", "reasoning": "200 * 0.30 = 60 errors. Half retryable = 30.", "answer": "30"},
+  {"id": "r-18", "reasoning": "8 min = 480 sec. Total requests = 5000 * 480 = 2,400,000. Failed = 60% = 1,440,000.", "answer": "1440000"},
+  {"id": "r-19", "reasoning": "0.85*2 + 0.15*40 = 1.7 + 6.0 = 7.7 ms.", "answer": "7.7"},
+  {"id": "r-20", "reasoning": "Per-item: A=0.005, B=0.008, C=0.003. Pipeline T = first-item latency + (N-1)*max_stage = 0.016 + 999*0.008 = 0.016 + 7.992 = 8.008 min.", "answer": "8.008"}
+]

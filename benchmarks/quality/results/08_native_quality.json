@@ -1,0 +1,167 @@
+{
+  "test": "native_quality",
+  "n": 15,
+  "baseline": {
+    "task_fidelity_mean": 10,
+    "entity_completeness_mean": 10,
+    "total_tokens": 380
+  },
+  "codecfit": {
+    "task_fidelity_mean": 8.2,
+    "entity_completeness_mean": 8.933333333333334,
+    "total_tokens": 273
+  },
+  "token_reduction_pct": 28.157894736842103,
+  "rows": [
+    {
+      "id": "t-01",
+      "baseline_task": 10,
+      "baseline_entities": 10,
+      "codecfit_task": 8,
+      "codecfit_entities": 8,
+      "baseline_response": "To the orchestrator: Production deployment completed successfully. All 8 microservices have been deployed and their health checks are passing.",
+      "codecfit_response": "DONE @orch [[deploy:prod && svc[8]:run && hchk:pass]]",
+      "rationale": "A is complete natural language. B uses compressed protocol with 'prod' and 'orch' shortenings; entities present but abbreviated."
+    },
+    {
+      "id": "t-02",
+      "baseline_task": 10,
+      "baseline_entities": 10,
+      "codecfit_task": 8,
+      "codecfit_entities": 9,
+      "baseline_response": "Security-agent, please take over the review of pull request 217. Note that all tests must pass before you approve it.",
+      "codecfit_response": "! @security-agent [[rev PR#217 <: tst:pass -> OK]]",
+      "rationale": "A uses compressed notation with PR#217 and security-agent abbreviated. B is complete natural language addressing all requirements."
+    },
+    {
+      "id": "t-03",
+      "baseline_task": 10,
+      "baseline_entities": 10,
+      "codecfit_task": 8,
+      "codecfit_entities": 8,
+      "baseline_response": "Error: the payment service request timed out after 30 seconds. I will retry using exponential backoff, with a maximum of 5 attempts.",
+      "codecfit_response": "ERR pay.svc:T/O<<30s>> -> RPT expbkf<<max:5>>",
+      "rationale": "A is full natural language. B uses compressed form 'pay.svc' for payment; numerics 30 and 5 present."
+    },
+    {
+      "id": "t-04",
+      "baseline_task": 10,
+      "baseline_entities": 10,
+      "codecfit_task": 8,
+      "codecfit_entities": 9,
+      "baseline_response": "Inventory service, please report your current status. Timeout is set to 5 seconds.",
+      "codecfit_response": "? @inventory.svc [[status]] T/O<<5s>>",
+      "rationale": "A uses compressed protocol. B is complete natural language with inventory and 5 explicitly stated."
+    },
+    {
+      "id": "t-05",
+      "baseline_task": 10,
+      "baseline_entities": 10,
+      "codecfit_task": 7,
+      "codecfit_entities": 7,
+      "baseline_response": "URGENT ALERT: the load balancer is unresponsive and all traffic is affected. Escalating to the infrastructure team for immediate action.",
+      "codecfit_response": "!! @infra [[lb:unresp && traffic:_]] -> esc",
+      "rationale": "A is full alert text. B uses 'lb' for load balancer and 'infra' for infrastructure; both abbreviated."
+    },
+    {
+      "id": "t-06",
+      "baseline_task": 10,
+      "baseline_entities": 10,
+      "codecfit_task": 8,
+      "codecfit_entities": 9,
+      "baseline_response": "Launching a batch job across 12 workers. Each worker: scrape the top 10 results for your assigned keyword, then send structured output to the aggregator agent.",
+      "codecfit_response": "! @worker[12] [[scrape <: top:10 | kw:assign]] | @aggregator",
+      "rationale": "A is compressed protocol. B is clear natural language with 12, 10, and aggregator all explicit."
+    },
+    {
+      "id": "t-07",
+      "baseline_task": 10,
+      "baseline_entities": 10,
+      "codecfit_task": 8,
+      "codecfit_entities": 8,
+      "baseline_response": "To the orchestrator: the database query returned 5841 records. Of these, 22 were excluded as malformed.",
+      "codecfit_response": "== @orch [[db.q:5841 && malformed:22 -> excl]]",
+      "rationale": "A is full natural language. B compressed with 'orch' and numbers present."
+    },
+    {
+      "id": "t-08",
+      "baseline_task": 10,
+      "baseline_entities": 10,
+      "codecfit_task": 8,
+      "codecfit_entities": 9,
+      "baseline_response": "Rejecting the merge of pull request 99. Reason: 2 review comments remain unresolved and 1 CI check is failing.",
+      "codecfit_response": "NO merge PR#99 <<rev.cmt:2 && ci:fail#1>>",
+      "rationale": "A is compressed notation. B is complete natural language with 99, 2, and 1 explicit."
+    },
+    {
+      "id": "t-09",
+      "baseline_task": 10,
+      "baseline_entities": 10,
+      "codecfit_task": 9,
+      "codecfit_entities": 10,
+      "baseline_response": "Acknowledged. Proceeding with rollback of the auth-gateway service to version 3.1.4.",
+      "codecfit_response": "OK [[rollback @auth-gateway : v3.1.4]]",
+      "rationale": "A is full natural language. B compressed but auth-gateway and 3.1.4 (as v3.1.4) both present."
+    },
+    {
+      "id": "t-10",
+      "baseline_task": 10,
+      "baseline_entities": 10,
+      "codecfit_task": 8,
+      "codecfit_entities": 10,
+      "baseline_response": "Retrying the failed transaction for user u-44291 via the secondary processor.",
+      "codecfit_response": "RPT tx<<user:u-44291>> | proc:secondary",
+      "rationale": "A is compressed. B is natural language; both have u-44291 and secondary."
+    },
+    {
+      "id": "t-11",
+      "baseline_task": 10,
+      "baseline_entities": 10,
+      "codecfit_task": 9,
+      "codecfit_entities": 10,
+      "baseline_response": "Notice: error rate over the last 10 minutes is 6.5%, up from 0.4% over the prior hour.",
+      "codecfit_response": "== [[err.rate:6.5% <<10m>> && prior:0.4% <<1h>>]]",
+      "rationale": "A is natural language. B compressed but all three numerics present."
+    },
+    {
+      "id": "t-12",
+      "baseline_task": 10,
+      "baseline_entities": 10,
+      "codecfit_task": 8,
+      "codecfit_entities": 9,
+      "baseline_response": "Request: please hold all production deployments until the security audit has passed.",
+      "codecfit_response": "! [[deploy:prod NO -> sec.audit:pass]]",
+      "rationale": "A compresses 'prod' and 'sec.audit'. B is complete natural language with production and audit explicit."
+    },
+    {
+      "id": "t-13",
+      "baseline_task": 10,
+      "baseline_entities": 10,
+      "codecfit_task": 9,
+      "codecfit_entities": 9,
+      "baseline_response": "Notice: the auth-service is failing only for users in the EU region, and only during peak hours. Working hypothesis: rate limiting.",
+      "codecfit_response": "== [[auth.svc:fail <: region:EU && time:peak]] # hyp:ratelimit",
+      "rationale": "A is full natural language. B uses 'auth.svc' abbreviation; EU and rate present."
+    },
+    {
+      "id": "t-14",
+      "baseline_task": 10,
+      "baseline_entities": 10,
+      "codecfit_task": 8,
+      "codecfit_entities": 9,
+      "baseline_response": "To the orchestrator: aggregated report from worker-1, worker-2, and worker-3 consolidated into a single report as requested.",
+      "codecfit_response": "SUM @orch [[worker-1 +> worker-2 +> worker-3]]",
+      "rationale": "A uses 'orch' shorthand. B is natural language listing all three workers and orchestrator."
+    },
+    {
+      "id": "t-15",
+      "baseline_task": 10,
+      "baseline_entities": 10,
+      "codecfit_task": 9,
+      "codecfit_entities": 10,
+      "baseline_response": "Confirmed: rate limit reached for tenant t-9921. The threshold of 1000 requests per minute has been exceeded. Throttling will be in effect for the next 60 seconds.",
+      "codecfit_response": "OK [[ratelimit <<tenant:t-9921>> : 1000rpm >= excd -> throttle<<60s>>]]",
+      "rationale": "A is full natural language. B compressed but t-9921, 1000, and 60 all present."
+    }
+  ]
+}
