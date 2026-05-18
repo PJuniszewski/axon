@@ -1,288 +1,135 @@
 # AXON Protocol
 
-**Agent eXchange Object Notation** — a compact symbolic language for token-efficient multi-agent communication.
+## What It Is
 
-AXON compresses natural-language inter-agent messages by **60–80%** using a fixed 31-symbol codebook. It sits between existing LLM agents as a transparent encoding layer — no fine-tuning, no model changes required.
+AXON (Agent eXchange Object Notation) is a compact symbolic protocol that
+reduces token usage in LLM multi-agent communication. A 148-token system
+prompt (CodecFit) teaches any frontier model to write AXON natively,
+eliminating verbose natural language between agents.
 
----
+## The Numbers
 
-## How It Works
+| Approach | Avg Token Reduction | Mechanism |
+|----------|---------------------|-----------|
+| Rule-based encoder (middleware) | 46% | Strip fillers + phrase compress at transmission |
+| **Native AXON output** | **74%** | Agent writes AXON directly via CodecFit injection |
+| Human-compressed intent | 77% | Theoretical maximum |
 
-```
-Natural Language (26 tokens):
-  "Please review pull request number 42, check if all tests are passing,
-   and then report back with a summary to the orchestrator"
-
-AXON Encoded (10 tokens):
-  !@orch ⟦rev PR#42 | ?tst.∀pass → ∑rpt⟧
-
-Reduction: 62%
-```
-
-AXON uses three mechanisms:
-
-1. **Intent Symbols** — single-character performatives replace verbose intent phrases (`!` = REQUEST, `?` = QUERY, `⊗` = ERROR, etc.)
-2. **Phrase Compression** — common multi-agent terms map to short stems (`database` → `db`, `deployment` → `depl`, `authentication` → `auth`)
-3. **Structural Notation** — payload delimiters `⟦⟧`, agent addressing `@`, and operators (`∧`, `|`, `⊂`) replace natural-language connectives
-
-Decoding uses a ~200-token **CodecFit** prompt — any frontier LLM can expand AXON back to fluent English with no training.
-
----
+Native mode measured on 20 realistic agent output samples (CrewAI/AutoGen/LangGraph
+style, averaging 85 NL tokens each) run through Claude Sonnet with CodecFit injected.
+All numbers are real `cl100k_base` token counts, not heuristic estimates.
 
 ## Architecture
 
+Old model (dead end):
+
 ```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│  @axon/core │ ◄── │ @axon/codec │ ◄── │  @axon/sdk  │
-│  codebook   │     │  encoder    │     │  AxonCodec  │
-│  grammar    │     │  decoder    │     │  AxonMsg    │
-│  types      │     │  codecfit   │     │             │
-└─────────────┘     └─────────────┘     └──────┬──────┘
-                                               │
-                              ┌────────────────┤
-                              ▼                ▼
-                    ┌─────────────┐   ┌──────────────┐
-                    │@axon/gateway│   │  playground   │
-                    │  Fastify    │   │  React 18    │
-                    │  proxy :9090│   │  Vite :5173  │
-                    └─────────────┘   └──────────────┘
+Agent A (NL) → AxonGate encodes → wire → AxonGate decodes → Agent B (NL)
 ```
 
-### Packages
+New model (ships):
 
-| Package | Description |
-|---------|-------------|
-| `packages/core` | 31-symbol codebook, TypeScript types, AXON grammar parser/formatter |
-| `packages/codec` | Rule-based NL→AXON encoder (no LLM), LLM-based decoder via CodecFit prompt |
-| `packages/sdk` | Public API — `AxonCodec` class and `AxonMsg` fluent builder |
-| `packages/gateway` | AxonGate transparent proxy server (Fastify, port 9090) |
-| `apps/playground` | Interactive demo with Encoder, Codebook, Gateway, and Benchmark tabs |
-| `benchmarks/` | 20-case benchmark suite with CLI runner |
+```
+Agent A (AXON native via CodecFit) → AxonGate validates + routes → Agent B (AXON native)
+```
 
----
+AxonGate's role is not encode/decode. It is:
 
-## Quick Start
+1. **Inject** — prepend 148-token CodecFit prompt into agent system prompts
+2. **Validate** — check agent output is valid AXON, graceful NL fallback
+3. **Route** — parse `@AGENT` field, resolve from registry, forward
+
+## What We Built
+
+**7 packages, 353 tests, ~10K lines**
+
+| Package | What |
+|---------|------|
+| `@axon/core` | 31-symbol codebook, grammar parser (Unicode + ASCII), 245-entry phrase dictionary |
+| `@axon/codec` | Rule-based encoder (fallback), LLM decoder, CodecFit injection system, real `cl100k_base` tokenizer |
+| `@axon/sdk` | `AxonCodec` class (rule/llm/hybrid/native modes), `AxonMsg` fluent builder, validation |
+| `@axon/gateway` | Fastify server with inject/validate/parse/route/agents endpoints + legacy encode/decode |
+| `@axon/playground` | React 18 demo — Encoder, Codebook, Gateway, Benchmark tabs |
+| `@axon/langchain` | LangChain callback handler, CrewAI bridge, framework-agnostic middleware |
+| `benchmarks` | 30-case encoder suite, 20 real agent samples, tokenization audit, native simulation |
+
+## Key Discovery: The Tokenization Audit
+
+19 of 31 Unicode symbols (`⟦⟧⊗∎⟳⚡∧∑⊂⊞⌛⌂...`) cost 2–3 tokens each on
+`cl100k_base`. Payload delimiters `⟦⟧` alone cost 6 tokens per message.
+
+This killed the original "60% compression" claim — Unicode mode achieves
+only 10% real savings. ASCII-safe alternatives (`[[]]`, `ERR`, `DONE`, `SUM`, `&&`)
+bring it to 46% via rule-based encoding.
+
+But the real fix was architectural: don't encode at transmission. Let agents
+write AXON at generation. Native mode achieves 74% with zero encoding cost.
+
+## Honest Evolution of the Headline Number
+
+| Phase | Claimed | Real (`cl100k_base`) | What Changed |
+|-------|---------|----------------------|--------------|
+| Initial POC | 61% | ~10% Unicode | Heuristic estimates were fake |
+| + ASCII mode | 37% | 37% | Replaced heuristic with tiktoken |
+| + Phase 2 encoder | 36% | 36% | 245 phrases, smart wrappers, harder suite |
+| + Real agent samples | — | 46% | Verbose LLM output has more filler to strip |
+| **+ Native mode** | — | **74%** | Agents write AXON directly via CodecFit |
+
+## Economics
+
+- CodecFit prompt: **148 tokens** (one-time per conversation)
+- Average saving per native AXON message: **63 tokens**
+- Break-even: **3 messages** (148 ÷ 63 = 2.3)
+
+For a 20-message agent conversation:
+
+- Without AXON: 20 × 85 = 1,700 tokens
+- With AXON: 148 (prompt) + 20 × 22 = 588 tokens
+- **Net saving: 1,112 tokens (65%)**
+
+At $3/M input tokens (Claude Sonnet): $0.003 saved per conversation.
+At 10K conversations/day: **$33/day**, $12K/year.
+
+## How to Use
 
 ```bash
-# Install dependencies
 pnpm install
-
-# Run all tests (85 tests across 4 packages)
-pnpm test
-
-# Run the 20-case benchmark suite
-pnpm benchmark
-
-# Start the gateway proxy (port 9090)
-pnpm --filter @axon/gateway dev
-
-# Start the playground UI (port 5173)
-pnpm playground
+pnpm test                                    # 353 tests
+pnpm benchmark                               # 30-case encoder benchmark
+pnpm tsx benchmarks/real_baseline.ts         # 20 real agent samples (46%)
+pnpm tsx benchmarks/native_simulation.ts     # native mode (74%, needs API key)
+pnpm tsx benchmarks/tokenization.ts          # symbol audit
 ```
 
-### Environment Setup
+## Honest Limitations
 
-Copy `.env.example` to `.env` and add your Anthropic API key (required only for LLM-based decoding):
+- **Native mode requires CodecFit in the agent's system prompt.** The 74%
+  number assumes the 148-token CodecFit primer has been injected. Without
+  it, the agent writes ordinary natural language and you fall back to the
+  46% rule-based path.
+- **Not yet tested in production.** Every number in this README comes from
+  controlled benchmarks against canned agent samples. There is no live
+  multi-agent system running on AXON in the wild yet — latency under load,
+  malformed-output rates, and routing edge cases are unmeasured.
+- **MCP and structured outputs solve an overlapping problem set.** Tool
+  schemas, JSON mode, and MCP message envelopes already cut ceremony for a
+  large slice of agent traffic. AXON's win is on the free-text reasoning
+  channel between agents — not on tool calls, which are already structured.
+- **Surviving value proposition: streaming-friendly routing plus a measured
+  74% saving with break-even at 3 messages.** AXON is parseable
+  line-by-line (`@agent` resolves before the payload finishes streaming),
+  and the CodecFit overhead amortizes after the third message in a
+  conversation. That is the case to make — not a generic "compression"
+  pitch.
 
-```bash
-cp .env.example .env
-# Edit .env and set ANTHROPIC_API_KEY=sk-ant-...
-```
+## Core Insight
 
----
+**Compression happens at generation, not transmission.**
 
-## SDK Usage
+The rule-based encoder can only delete words from existing verbose output —
+ceiling ~46%. But if you teach the agent to write AXON natively (via a
+148-token system prompt), it never produces the verbose output in the first
+place — achieving 74%, within 3 pp of human-optimal compression.
 
-### Encode in 3 lines
-
-```typescript
-import { AxonCodec } from "@axon/sdk";
-
-const codec = new AxonCodec();
-const result = await codec.encode("Please review pull request 42 and report back");
-console.log(result.encoded);      // !⟦rev PR 42 rpt⟧
-console.log(result.reductionPct); // 67
-```
-
-### Fluent Message Builder
-
-```typescript
-import { AxonMsg } from "@axon/sdk";
-
-// Build an AXON message programmatically
-const msg = AxonMsg.request()
-  .to("orch")
-  .payload("rev PR#42 | ?tst.∀pass → ∑rpt")
-  .build();
-// → "!@orch ⟦rev PR#42 | ?tst.∀pass → ∑rpt⟧"
-
-// Parse an AXON string
-const parsed = AxonMsg.parse("!@orch ⟦rev PR#42⟧");
-// → { performative: "REQUEST", agent: "orch", payload: "rev PR#42", ... }
-```
-
-### Decode with LLM
-
-```typescript
-const codec = new AxonCodec({ apiKey: process.env.ANTHROPIC_API_KEY });
-const natural = await codec.decode("⊗ pay.svc:timeout⟨30s⟩ → ⟳ backoff:exp");
-// → "An error occurred in the payment service due to a 30-second timeout.
-//    Retrying with exponential backoff."
-```
-
----
-
-## Symbol Reference
-
-### Intent (11 symbols)
-
-| Symbol | Name | Description |
-|:------:|------|-------------|
-| `!` | REQUEST | Initiate action |
-| `?` | QUERY | Request information or status |
-| `≡` | INFORM | Transmit data or state update |
-| `→` | DELEGATE | Transfer task ownership |
-| `⊕` | MERGE | Combine multiple results |
-| `✓` | CONFIRM | Acknowledge and accept |
-| `✗` | REJECT | Refuse or deny |
-| `⊗` | ERROR | Signal failure state |
-| `∎` | COMPLETE | Task finalized |
-| `⟳` | RETRY | Repeat last operation |
-| `⚡` | URGENT | High-priority escalation |
-
-### Structure (8 symbols)
-
-| Symbol | Name | Description |
-|:------:|------|-------------|
-| `#` | REF | ID or entity reference |
-| `@` | AGENT | Target agent address |
-| `\|` | PIPE | Sequential operation chain |
-| `:` | ASSIGN | Property assignment |
-| `⟦` `⟧` | PAYLOAD | Payload delimiters |
-| `⟨` `⟩` | CONTEXT | Context delimiters |
-
-### Logic (7 symbols)
-
-| Symbol | Name | Description |
-|:------:|------|-------------|
-| `∧` | AND | Logical conjunction |
-| `∨` | OR | Logical disjunction |
-| `∀` | ALL | Universal quantifier |
-| `∃` | EXISTS | Existential check |
-| `∅` | NULL | Empty, none, not found |
-| `≥` `≤` | GTE/LTE | Comparison operators |
-
-### Domain (5 symbols)
-
-| Symbol | Name | Description |
-|:------:|------|-------------|
-| `⊂` | FILTER | Subset or filter condition |
-| `∑` | AGGREGATE | Summarize or collect results |
-| `⊞` | BATCH | Batch operation |
-| `⌛` | TIMEOUT | Time constraint |
-| `⌂` | LOCAL | Internal or in-process scope |
-
----
-
-## Wire Format
-
-```
-[INTENT] [@AGENT] ⟦PAYLOAD⟧ ⟨CONTEXT⟩
-```
-
-- **INTENT** — required, one of the 11 intent symbols
-- **@AGENT** — optional, target agent address (omit for broadcast)
-- **⟦PAYLOAD⟧** — compressed operation body
-- **⟨CONTEXT⟩** — optional metadata (timing, priority, session)
-
----
-
-## Benchmark Results
-
-20 canonical inter-agent messages across 10 categories:
-
-| Metric | Value |
-|--------|-------|
-| **Average Reduction** | 61% |
-| **Best Case** | 73% |
-| **Worst Case** | 50% |
-| **Pass Rate** | 20/20 |
-
-Run `pnpm benchmark` to reproduce.
-
----
-
-## Gateway API
-
-Start with `pnpm --filter @axon/gateway dev` (default port 9090).
-
-| Method | Path | Description |
-|--------|------|-------------|
-| `GET` | `/health` | Liveness check |
-| `POST` | `/encode` | NL → AXON (`{ "message": "..." }`) |
-| `POST` | `/decode` | AXON → NL (`{ "axon": "..." }`) |
-| `POST` | `/proxy` | Full proxy flow: encode → forward → decode |
-| `GET` | `/analytics` | Aggregated token savings stats |
-| `GET` | `/analytics/live` | SSE stream of real-time compression events |
-
-```bash
-# Encode a message
-curl -X POST http://localhost:9090/encode \
-  -H "Content-Type: application/json" \
-  -d '{"message": "Please check the database status"}'
-```
-
----
-
-## Playground
-
-The interactive demo (`pnpm playground`) provides four tabs:
-
-- **Encoder** — Type or select a preset, see live NL→AXON encoding with token comparison bars
-- **Codebook** — Searchable, filterable grid of all 31 symbols
-- **Gateway** — Visual proxy flow diagram with live token savings counter
-- **Benchmark** — Run all 20 benchmark cases, view results table, export to CSV
-
----
-
-## Project Structure
-
-```
-axon/
-├── packages/
-│   ├── core/          # codebook, types, grammar
-│   ├── codec/         # encoder, decoder, codecfit
-│   ├── sdk/           # AxonCodec, AxonMsg
-│   └── gateway/       # Fastify proxy server
-├── apps/
-│   └── playground/    # React demo UI
-├── benchmarks/        # 20-case benchmark suite
-├── docs/
-│   └── spec.md        # Full AXON format specification
-├── package.json
-├── pnpm-workspace.yaml
-├── turbo.json
-└── tsconfig.base.json
-```
-
----
-
-## Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| Monorepo | pnpm workspaces + Turborepo |
-| Core / SDK | TypeScript 5.8, strict mode |
-| Gateway | Fastify 5 |
-| Demo | Vite 6 + React 18 |
-| Testing | Vitest 3 |
-| LLM | Anthropic SDK (Claude) |
-
----
-
-## What This POC Proves
-
-1. **Encoding NL → AXON reduces tokens measurably** — 61% average on benchmark set
-2. **Any frontier LLM can decode AXON** via a ~200-token CodecFit prompt
-3. **AxonGate proxy works transparently** — zero changes to upstream/downstream agents
-4. **Developer SDK is ergonomic** — encode/decode in 3 lines
+**AxonGate's value is not encode/decode middleware.** It is CodecFit
+injection + AXON validation + message routing.
