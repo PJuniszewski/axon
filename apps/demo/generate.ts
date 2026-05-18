@@ -374,8 +374,10 @@ h1 { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: 0.3px; }
 
 /* Mobile tabs */
 .tabs { display: none; border-bottom: 1px solid var(--border); background: var(--bg-panel); }
-.tab { flex: 1; padding: 12px 8px; text-align: center; color: var(--text-dim); cursor: pointer; font-size: 12px; font-weight: 500; border-bottom: 2px solid transparent; user-select: none; }
+.tab { flex: 1; padding: 14px 8px; text-align: center; color: var(--text-dim); cursor: pointer; font-size: 13px; font-weight: 500; border-bottom: 2px solid transparent; user-select: none; background: transparent; border-top: none; border-left: none; border-right: none; font-family: inherit; touch-action: manipulation; -webkit-tap-highlight-color: rgba(127,219,202,0.15); }
+.tab:focus { outline: none; }
 .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab:active { background: var(--bg-panel-2); }
 
 .layout { display: grid; grid-template-columns: 380px 1fr 460px; gap: 1px; background: var(--border); height: calc(100vh - 53px); }
 .panel { background: var(--bg-panel); overflow: auto; padding: 16px 18px; -webkit-overflow-scrolling: touch; }
@@ -489,9 +491,9 @@ footer a:hover { color: var(--accent); }
 </header>
 
 <div class="tabs">
-  <div class="tab active" data-tab="left">Overview</div>
-  <div class="tab" data-tab="middle">Conversations</div>
-  <div class="tab" data-tab="right">Timeline</div>
+  <button type="button" class="tab active" data-tab="left">Overview</button>
+  <button type="button" class="tab" data-tab="middle">Conversations</button>
+  <button type="button" class="tab" data-tab="right">Timeline</button>
 </div>
 
 <div class="layout">
@@ -762,12 +764,18 @@ function escapeHtml(s) { return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&l
 // search
 document.getElementById('search').addEventListener('input', (e) => { state.search = e.target.value; applyFilters(); });
 
-// ─ Mobile tabs ─
+// ─ Mobile tabs (event delegation, works on every browser including iOS Safari) ─
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
   document.querySelectorAll('.panel').forEach(p => p.classList.toggle('tab-active', p.dataset.panel === name));
+  // ensure user sees the panel content from the top
+  const panel = document.querySelector('.panel.tab-active');
+  if (panel) panel.scrollTop = 0;
 }
-document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => switchTab(t.dataset.tab)));
+document.addEventListener('click', (e) => {
+  const tab = e.target.closest && e.target.closest('.tab');
+  if (tab && tab.dataset.tab) switchTab(tab.dataset.tab);
+});
 
 // initial render
 applyFilters();
