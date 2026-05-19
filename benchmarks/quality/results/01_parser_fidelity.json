@@ -1,0 +1,335 @@
+{
+  "test": "parser_fidelity",
+  "n": 50,
+  "overall": {
+    "passed": 50,
+    "total": 50,
+    "rate": 1,
+    "ci95": [
+      0.9286499658256813,
+      1
+    ]
+  },
+  "by_source": {
+    "rule_encoder": {
+      "passed": 30,
+      "total": 30,
+      "rate": 1,
+      "ci95": [
+        0.886482908609522,
+        1
+      ]
+    },
+    "native_llm": {
+      "passed": 20,
+      "total": 20,
+      "rate": 1,
+      "ci95": [
+        0.8388698745050667,
+        0.9999999999999998
+      ]
+    }
+  },
+  "rows": [
+    {
+      "id": "qm-01",
+      "source": "rule-encoder",
+      "axon": "→ @security- ⟦dele cr PR 42 Make sure 47 tests pass approving⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-02",
+      "source": "rule-encoder",
+      "axon": "⊗ ⟦pay svc retu 500 error 30-second T/O retry expbkf max 5 attempts⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-03",
+      "source": "rule-encoder",
+      "axon": "! ⟦depl complete 12 svcs runn prod k8s clu hchks pass⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-04",
+      "source": "rule-encoder",
+      "axon": "? ⟦curr status user-svc eu-west-1 region⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-05",
+      "source": "rule-encoder",
+      "axon": "⚡ ⟦URGENT prim lb unresponsive traf affected Imme infra team action required⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-06",
+      "source": "rule-encoder",
+      "axon": "! ⟦db query complete 1247 recs matc filt criteria 3 excl as malformed⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-07",
+      "source": "rule-encoder",
+      "axon": "≡ ⟦tstste passes 24 svcs proc depl staging Otherwise report fail orch⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-08",
+      "source": "rule-encoder",
+      "axon": "! ⟦noti auth-svc fails EU users peak hours rlim⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-09",
+      "source": "rule-encoder",
+      "axon": "! ⟦Disp batch job 8 wagts scrape top 10 res keyw return sdata⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-10",
+      "source": "rule-encoder",
+      "axon": "? ⟦Fetch recs users-db status equals pend created_at 30 days agg region⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-11",
+      "source": "rule-encoder",
+      "axon": "✓ ⟦Acknowledged Pro rback vers 241 api-gateway svc⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-12",
+      "source": "rule-encoder",
+      "axon": "⊕ ⟦Cannot appr merge PR 88 3 unr comm 2 fail CI checks⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-13",
+      "source": "rule-encoder",
+      "axon": "⊕ ⟦Comb outp wkr-1 wkr-2 wkr-3 single agg report⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-14",
+      "source": "rule-encoder",
+      "axon": "⊗ ⟦retry fail pay txn user 88421 seco processor⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-15",
+      "source": "rule-encoder",
+      "axon": "! ⟦Query inve svc T/O 5 s rsp⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-16",
+      "source": "rule-encoder",
+      "axon": "! Update local cache only prop change nodes yet",
+      "parsed": true
+    },
+    {
+      "id": "qm-17",
+      "source": "rule-encoder",
+      "axon": "! Check wkr pods Cra state",
+      "parsed": true
+    },
+    {
+      "id": "qm-18",
+      "source": "rule-encoder",
+      "axon": "! ⟦Search retu matc recs cust ID c-44291⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-19",
+      "source": "rule-encoder",
+      "axon": "! ⟦lat search endp grea 500ms thr breached⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-20",
+      "source": "rule-encoder",
+      "axon": "? ⟦rst metrics-collector hosts host-01 host-02 ver Pro scra resu 60 s⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-21",
+      "source": "rule-encoder",
+      "axon": "⊗ ⟦depl stag fail beca db migr timed 120 s caused read probe fail trig rback prev version⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-22",
+      "source": "rule-encoder",
+      "axon": "≡ report orch expires",
+      "parsed": true
+    },
+    {
+      "id": "qm-23",
+      "source": "rule-encoder",
+      "axon": "✓ ⟦Pre anl sugg ~ 15 pct reqs timing out samp confirm⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-24",
+      "source": "rule-encoder",
+      "axon": "! depl prod until sec audit passed",
+      "parsed": true
+    },
+    {
+      "id": "qm-25",
+      "source": "rule-encoder",
+      "axon": "⊗ ⟦Error rate last 15 min 42 pct 03 pct prior hour⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-26",
+      "source": "rule-encoder",
+      "axon": "! ⟦Upgr redis-clu vers 627 705 mai window star 0200 UTC⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-27",
+      "source": "rule-encoder",
+      "axon": "! ⟦User u-9921 per access billing-svc endp /admin/refunds⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-28",
+      "source": "rule-encoder",
+      "axon": "! ⟦rlim reac tenant t-5544 1000 reqs minute exceeded Thr 60 s⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-29",
+      "source": "rule-encoder",
+      "axon": "? ⟦wkr-7 cannot proc beca wkr-4 yet prod output depe queue-consumer fini batch 33⟧",
+      "parsed": true
+    },
+    {
+      "id": "qm-30",
+      "source": "rule-encoder",
+      "axon": "! ⟦depl prop ready review 3 revi must appr proceed alice bob carol⟧",
+      "parsed": true
+    },
+    {
+      "id": "native-01",
+      "source": "native-llm",
+      "axon": "→@review ⟦rev PR#42 | ?tst.∀:pass → ∑@orch⟧",
+      "parsed": true
+    },
+    {
+      "id": "native-02",
+      "source": "native-llm",
+      "axon": "≡ ⟦db.qry ∎ | rec:1247 ok ⊂ malformed:3⟧",
+      "parsed": true
+    },
+    {
+      "id": "native-03",
+      "source": "native-llm",
+      "axon": "≡ ⟦hchk ∎ | svc:11/12 ok | pay.svc:lat↑ → ⚡ infra⟧",
+      "parsed": true
+    },
+    {
+      "id": "native-04",
+      "source": "native-llm",
+      "axon": "⊗ ⟦auth.svc:timeout⟨30s⟩ → ⟳ expbkf max:5⟧",
+      "parsed": true
+    },
+    {
+      "id": "native-05",
+      "source": "native-llm",
+      "axon": "!@worker.∀ ⟦scrape top10 ∀kw | ⊞ struct.data → ∑aggr⟧",
+      "parsed": true
+    },
+    {
+      "id": "native-06",
+      "source": "native-llm",
+      "axon": "∎ ⟦depl ∎ | k8s.prod | svc:12 ok | hchk:∀pass⟧",
+      "parsed": true
+    },
+    {
+      "id": "native-07",
+      "source": "native-llm",
+      "axon": "→@sec ⟦audit diff | ?std.comp | ∑struct.rep⟧",
+      "parsed": true
+    },
+    {
+      "id": "native-08",
+      "source": "native-llm",
+      "axon": "! ⟦users.db ⊂ status:pending ∧ age≤30d → validate → ∑err.rep⟧",
+      "parsed": true
+    },
+    {
+      "id": "native-09",
+      "source": "native-llm",
+      "axon": "⚡ ⟦lb:∅resp | traffic:∀aff → infra now⟧",
+      "parsed": true
+    },
+    {
+      "id": "native-10",
+      "source": "native-llm",
+      "axon": "?@user.svc ⟦status ⊂ region:eu-west-1⟧",
+      "parsed": true
+    },
+    {
+      "id": "native-11",
+      "source": "native-llm",
+      "axon": "→@deploy ⟦v2.4.1 ⟳ rollback api-gateway⟧",
+      "parsed": true
+    },
+    {
+      "id": "native-12",
+      "source": "native-llm",
+      "axon": "✗ ⟦PR#88 | comm:3 unres ∧ ci:2 fail⟧",
+      "parsed": true
+    },
+    {
+      "id": "native-13",
+      "source": "native-llm",
+      "axon": "⊕ ⟦worker-1 ∧ worker-2 ∧ worker-3 → ∑rep⟧",
+      "parsed": true
+    },
+    {
+      "id": "native-14",
+      "source": "native-llm",
+      "axon": "⟳ ⟦pay.tx user:88421 → secondary⟧",
+      "parsed": true
+    },
+    {
+      "id": "native-15",
+      "source": "native-llm",
+      "axon": "?@inv.svc ⟦status⟩ ⌛5s",
+      "parsed": true
+    },
+    {
+      "id": "native-16",
+      "source": "native-llm",
+      "axon": "! ⟦cache.⌂ upd | ¬propagate⟧",
+      "parsed": true
+    },
+    {
+      "id": "native-17",
+      "source": "native-llm",
+      "axon": "?∃ ⟦worker.pod | state:CrashLoopBackOff⟧",
+      "parsed": true
+    },
+    {
+      "id": "native-18",
+      "source": "native-llm",
+      "axon": "≡ ⟦search ⊂ cust:c-44291 → ∅⟧",
+      "parsed": true
+    },
+    {
+      "id": "native-19",
+      "source": "native-llm",
+      "axon": "≡ ⟦search.lat > 500ms | thresh:breach⟧",
+      "parsed": true
+    },
+    {
+      "id": "native-20",
+      "source": "native-llm",
+      "axon": "! ⟦restart metrics-collector @host-01,host-02 → ?prom.scrape ⌛60s⟧",
+      "parsed": true
+    }
+  ]
+}

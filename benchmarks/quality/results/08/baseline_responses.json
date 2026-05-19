@@ -1,0 +1,17 @@
+[
+  {"id": "t-01", "response": "To the orchestrator: Production deployment completed successfully. All 8 microservices have been deployed and their health checks are passing."},
+  {"id": "t-02", "response": "Security-agent, please take over the review of pull request 217. Note that all tests must pass before you approve it."},
+  {"id": "t-03", "response": "Error: the payment service request timed out after 30 seconds. I will retry using exponential backoff, with a maximum of 5 attempts."},
+  {"id": "t-04", "response": "Inventory service, please report your current status. Timeout is set to 5 seconds."},
+  {"id": "t-05", "response": "URGENT ALERT: the load balancer is unresponsive and all traffic is affected. Escalating to the infrastructure team for immediate action."},
+  {"id": "t-06", "response": "Launching a batch job across 12 workers. Each worker: scrape the top 10 results for your assigned keyword, then send structured output to the aggregator agent."},
+  {"id": "t-07", "response": "To the orchestrator: the database query returned 5841 records. Of these, 22 were excluded as malformed."},
+  {"id": "t-08", "response": "Rejecting the merge of pull request 99. Reason: 2 review comments remain unresolved and 1 CI check is failing."},
+  {"id": "t-09", "response": "Acknowledged. Proceeding with rollback of the auth-gateway service to version 3.1.4."},
+  {"id": "t-10", "response": "Retrying the failed transaction for user u-44291 via the secondary processor."},
+  {"id": "t-11", "response": "Notice: error rate over the last 10 minutes is 6.5%, up from 0.4% over the prior hour."},
+  {"id": "t-12", "response": "Request: please hold all production deployments until the security audit has passed."},
+  {"id": "t-13", "response": "Notice: the auth-service is failing only for users in the EU region, and only during peak hours. Working hypothesis: rate limiting."},
+  {"id": "t-14", "response": "To the orchestrator: aggregated report from worker-1, worker-2, and worker-3 consolidated into a single report as requested."},
+  {"id": "t-15", "response": "Confirmed: rate limit reached for tenant t-9921. The threshold of 1000 requests per minute has been exceeded. Throttling will be in effect for the next 60 seconds."}
+]

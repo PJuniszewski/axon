@@ -1,0 +1,102 @@
+[
+  {
+    "id": "th-01-m0",
+    "nl0": "Alert: payment-svc returning 500 errors at 14:32 UTC. Error rate 8.2 percent.",
+    "axon1": "⊗ ⟦Alert pay-svc ret 500 errors 1432 UTC Error rate 82 pct⟧",
+    "nl1": "Information: Alert that the payment service is returning HTTP 500 errors as of 14:32 UTC. The error rate is 82 percent.",
+    "axon2": "⊗ ⟦info Alert pay svc ret HTTP 500 errors as 1432 UTC error rate 82 pct⟧",
+    "nl2": "Informational alert: the payment service is returning HTTP 500 errors as of 14:32 UTC, with an error rate of 82 percent.",
+    "axon3": "⊗ ⟦Inf alert pay svc ret HTTP 500 errors as 1432 UTC error rate 82 pct⟧",
+    "nl3": "Information alert: the payment service is returning HTTP 500 errors as of 14:32 UTC, with an error rate of 82 percent."
+  },
+  {
+    "id": "th-01-m1",
+    "nl0": "Acknowledged. Delegating diagnosis to sre-agent. Set priority P1.",
+    "axon1": "✓ @sre- ⟦Acknowledged Del diag Set prio P1⟧",
+    "nl1": "Confirmation from the SRE agent: Acknowledged. Delegating diagnosis. Setting priority to P1.",
+    "axon2": "✓ ⟦Con SRE agent Acknowledged Del diagnosis Sett prio P1⟧",
+    "nl2": "Confirmation: the SRE agent has acknowledged the request. Diagnosis has been delegated and the priority has been set to P1.",
+    "axon3": "✓ ⟦Confirmation SRE agent ack req Diag dele prio set P1⟧",
+    "nl3": "Confirmation: the SRE agent has acknowledged the request, diagnostics have been delegated, and the priority is set to P1."
+  },
+  {
+    "id": "th-02-m0",
+    "nl0": "Starting nightly ETL run job-id etl-2456. Source: postgres replica-2. Target: warehouse.",
+    "axon1": "! ⟦Star nigh ETL run job-id etl-2456 Source post replica-2 Target warehouse⟧",
+    "nl1": "Request: Start the nightly ETL run with job id etl-2456. The source is the Postgres replica-2 and the target is the warehouse.",
+    "axon2": "! ⟦req Start nigh ETL run job id etl-2456 source Post replica-2 target warehouse⟧",
+    "nl2": "Request: start the nightly ETL run with job id etl-2456, sourced from Postgres replica-2 and targeted at the warehouse.",
+    "axon3": "! ⟦req start nigh ETL run job id etl-2456 sour Post replica-2 targ warehouse⟧",
+    "nl3": "Request to start the nightly ETL run, job id etl-2456, source is Postgres replica-2, target is the warehouse."
+  },
+  {
+    "id": "th-02-m1",
+    "nl0": "Extracted 4 million 200 thousand rows from orders table. Skipped 14 corrupt rows.",
+    "axon1": "! ⟦ext 4 mill 200 thou rows orders table Skip 14 corr rows⟧",
+    "nl1": "Request: Extract 4,200,000 rows from the orders table. Skip 14 corrupted rows.",
+    "axon2": "! ⟦req ext 4200000 rows orders table Skip 14 corr rows⟧",
+    "nl2": "Request: extract 4,200,000 rows from the orders table, skipping 14 corrupted rows.",
+    "axon3": "! ⟦req ext 4200000 rows orders table skip 14 corr rows⟧",
+    "nl3": "Request to extract 4,200,000 rows from the orders table, skipping 14 corrupt rows."
+  },
+  {
+    "id": "th-03-m0",
+    "nl0": "Build sec-build-553 complete. Static analysis flagged 3 medium findings in module auth-handler.",
+    "axon1": "! ⟦Build sec-build-553 complete Static anl flag 3 medium res module auth-handler⟧",
+    "nl1": "Request: Build sec-build-553 is complete. Static analysis flagged 3 medium-severity results in the auth-handler module.",
+    "axon2": "! ⟦req Build sec-build-553 complete Static anl flag 3 medium-sev res auth-handler module⟧",
+    "nl2": "Request: build sec-build-553 is complete. Static analysis flagged 3 medium-severity results in the auth-handler module.",
+    "axon3": "! ⟦req build sec-build-553 complete Static anl flag 3 medium-sev res auth-handler module⟧",
+    "nl3": "Request: build sec-build-553 is complete; static analysis flagged 3 medium-severity results in the auth-handler module."
+  },
+  {
+    "id": "th-03-m1",
+    "nl0": "Delegating triage to security-agent. Severity threshold for blocking: high or above.",
+    "axon1": "! @security- Del triage sev thr blocking high above",
+    "nl1": "Request to the security agent: Delegate triage; the severity threshold for blocking is high and above.",
+    "axon2": "→ @security ⟦req Dele triage sev thr bloc high above⟧",
+    "nl2": "Delegation to the security agent: request to delegate triage; the severity threshold is set to block high and above.",
+    "axon3": "→ @security ⟦Del req dele triage sev thr set block high above⟧",
+    "nl3": "Delegate to the security agent: delegation requested for triage, with the severity threshold set to block high and above."
+  },
+  {
+    "id": "th-04-m0",
+    "nl0": "Latency from us-east-1 to clients in eu-central-1 spiked to 380 milliseconds. Threshold: 200.",
+    "axon1": "! ⟦lat us-east-1 clie eu-central-1 spiked 380 milliseconds thr 200⟧",
+    "nl1": "Request: Latency for us-east-1 clients in eu-central-1 spiked to 380 milliseconds, exceeding the threshold of 200.",
+    "axon2": "! ⟦req lat us-east-1 clie eu-central-1 spiked 380 milliseconds exce thr 200⟧",
+    "nl2": "Request: latency from us-east-1 clients to eu-central-1 has spiked to 380 milliseconds, exceeding the threshold of 200.",
+    "axon3": "! ⟦req lat us-east-1 clie eu-central-1 spiked 380 milliseconds exce thr 200⟧",
+    "nl3": "Request: latency from us-east-1 clients to eu-central-1 has spiked to 380 milliseconds, exceeding the threshold of 200."
+  },
+  {
+    "id": "th-04-m1",
+    "nl0": "Considering failover. Current traffic on us-east-1: 12 thousand requests per second.",
+    "axon1": "! ⟦Con failover Curr traf us-east-1 12 thou reqs second⟧",
+    "nl1": "Request: Confirm failover. Current traffic on us-east-1 is 12,000 requests per second.",
+    "axon2": "✓ ⟦req Conf failover Curr traf us-east-1 12000 reqs second⟧",
+    "nl2": "Confirmation requested: confirm the failover. Current traffic in us-east-1 is 12,000 requests per second.",
+    "axon3": "✓ ⟦Con req'd conf failover Curr traf us-east-1 12000 reqs second⟧",
+    "nl3": "Confirmation: requested confirmation of failover; current traffic on us-east-1 is 12,000 requests per second."
+  },
+  {
+    "id": "th-05-m0",
+    "nl0": "Starting training run train-9911 on model gpt-medium-v3. Dataset: combined-v7 with 1.2 million examples.",
+    "axon1": "! ⟦Star trai run train-9911 model gpt-medium-v3 Dataset combined-v7 12 mill examples⟧",
+    "nl1": "Request: Start the training run train-9911 for model gpt-medium-v3. The dataset is combined-v7 with 12,000,000 examples.",
+    "axon2": "! ⟦req Start trai run train-9911 model gpt-medium-v3 data combined-v7 12000000 examples⟧",
+    "nl2": "Request: start the training run train-9911 using model gpt-medium-v3 on the combined-v7 dataset with 12,000,000 examples.",
+    "axon3": "! ⟦req start trai run train-9911 model gpt-medium-v3 combined-v7 data 12000000 examples⟧",
+    "nl3": "Request to start training run train-9911 with model gpt-medium-v3 on the combined-v7 dataset of 12,000,000 examples."
+  },
+  {
+    "id": "th-05-m1",
+    "nl0": "Optimizer: AdamW with learning rate 2e-5 and weight decay 0.01. Batch size 32 per GPU across 8 GPUs.",
+    "axon1": "! ⟦Optimizer AdamW lear rate 2e-5 weight decay 001 Batch size 32 GPU 8 GPUs⟧",
+    "nl1": "Request: Optimizer is AdamW with learning rate 2e-5 and weight decay 0.01. Batch size is 32, using 8 GPUs.",
+    "axon2": "! ⟦req Opti AdamW lear rate 2e-5 weight decay 001 Batch size 32 8 GPUs⟧",
+    "nl2": "Request: use the AdamW optimizer with a learning rate of 2e-5, weight decay of 0.01, batch size of 32, on 8 GPUs.",
+    "axon3": "! ⟦req use AdamW opti lear rate 2e-5 weight decay 001 batch size 32 8 GPUs⟧",
+    "nl3": "Request to use the AdamW optimizer with learning rate 2e-5, weight decay 0.01, batch size 32, on 8 GPUs."
+  }
+]

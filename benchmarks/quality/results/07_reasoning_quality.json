@@ -1,0 +1,369 @@
+{
+  "test": "reasoning_quality",
+  "n": 20,
+  "arms": {
+    "baseline": {
+      "accuracy": 0.85,
+      "rows": [
+        {
+          "id": "r-01",
+          "difficulty": "easy",
+          "expected": "83",
+          "actual": "83",
+          "reasoning": "Initial 47 tokens + 3 retries x 12 tokens = 47 + 36 = 83.",
+          "correct": true
+        },
+        {
+          "id": "r-02",
+          "difficulty": "easy",
+          "expected": "92.5",
+          "actual": "92.5",
+          "reasoning": "240 - 18 = 222 passed. 222/240 = 0.925 = 92.5%.",
+          "correct": true
+        },
+        {
+          "id": "r-03",
+          "difficulty": "med",
+          "expected": "56",
+          "actual": "56",
+          "reasoning": "3 workers in parallel, 21 tasks means 7 tasks per worker. 7 x 8 = 56 minutes.",
+          "correct": true
+        },
+        {
+          "id": "r-04",
+          "difficulty": "med",
+          "expected": "216",
+          "actual": "216",
+          "reasoning": "30 days x 24 x 60 = 43200 minutes. Downtime = 0.5% x 43200 = 216 minutes.",
+          "correct": true
+        },
+        {
+          "id": "r-05",
+          "difficulty": "med",
+          "expected": "28",
+          "actual": "42",
+          "reasoning": "Agent A: 4 min/task. Agent B 50% slower: 6 min/task. Working in parallel one each at a time, 14 tasks split: 7 each. A finishes 7 in 28 min, B in 42 min. Max = 42.",
+          "correct": false
+        },
+        {
+          "id": "r-06",
+          "difficulty": "easy",
+          "expected": "33.3",
+          "actual": "33.33",
+          "reasoning": "Net drain = 80 - 50 = 30 per second. 1000/30 = 33.33 seconds.",
+          "correct": true
+        },
+        {
+          "id": "r-07",
+          "difficulty": "hard",
+          "expected": "11.9",
+          "actual": "10.925",
+          "reasoning": "Extraction 5 min. Transformation 30% x 5 = 1.5 min. Loading 2 x 1.5 = 3 min. Subtotal = 9.5. Validation 15% overhead: 9.5 x 1.15 = 10.925.",
+          "correct": false
+        },
+        {
+          "id": "r-08",
+          "difficulty": "med",
+          "expected": "0.84",
+          "actual": "0.84",
+          "reasoning": "P(>=3 of 5) with p=0.7. P(3)=C(5,3)*0.7^3*0.3^2=10*0.343*0.09=0.3087. P(4)=5*0.2401*0.3=0.36015. P(5)=0.16807. Sum=0.83692. Rounded to 0.84.",
+          "correct": true
+        },
+        {
+          "id": "r-09",
+          "difficulty": "easy",
+          "expected": "2",
+          "actual": "2",
+          "reasoning": "Worker 2 has 40% of 100 = 40 tasks. Does 20 in 1 hour, so 40 in 2 hours.",
+          "correct": true
+        },
+        {
+          "id": "r-10",
+          "difficulty": "hard",
+          "expected": "71.6",
+          "actual": "71.6",
+          "reasoning": "0.92^4 = 0.92*0.92=0.8464; 0.8464*0.92=0.778688; *0.92=0.71639296. As percent ~71.6%.",
+          "correct": true
+        },
+        {
+          "id": "r-11",
+          "difficulty": "easy",
+          "expected": "60",
+          "actual": "60",
+          "reasoning": "600/min limit, current 540 used. Remaining budget = 60 requests for this window.",
+          "correct": true
+        },
+        {
+          "id": "r-12",
+          "difficulty": "med",
+          "expected": "0.765",
+          "actual": "0.765",
+          "reasoning": "0.9 x 0.85 = 0.765.",
+          "correct": true
+        },
+        {
+          "id": "r-13",
+          "difficulty": "easy",
+          "expected": "9",
+          "actual": "9",
+          "reasoning": "25% of 12 = 3 reserved. Production = 12 - 3 = 9.",
+          "correct": true
+        },
+        {
+          "id": "r-14",
+          "difficulty": "med",
+          "expected": "126",
+          "actual": "126",
+          "reasoning": "500/8 = 62.5, round up to 63 tasks per worker. 63 x 2 = 126 minutes.",
+          "correct": true
+        },
+        {
+          "id": "r-15",
+          "difficulty": "hard",
+          "expected": "4347",
+          "actual": "4347",
+          "reasoning": "Budget 1,000,000 - 148 overhead = 999,852. Each message uses 230 tokens (encoded). 999852/230 = 4347.18... floor = 4347.",
+          "correct": true
+        },
+        {
+          "id": "r-16",
+          "difficulty": "easy",
+          "expected": "80",
+          "actual": "80",
+          "reasoning": "20 - 4 = 16 healthy. 16/20 = 80%.",
+          "correct": true
+        },
+        {
+          "id": "r-17",
+          "difficulty": "med",
+          "expected": "30",
+          "actual": "30",
+          "reasoning": "30% of 200 = 60 errors. Half = 30 retryable.",
+          "correct": true
+        },
+        {
+          "id": "r-18",
+          "difficulty": "med",
+          "expected": "1440000",
+          "actual": "1440000",
+          "reasoning": "8 min = 480 sec. 5000 rps x 480 = 2,400,000 requests. 60% errors = 1,440,000 failed.",
+          "correct": true
+        },
+        {
+          "id": "r-19",
+          "difficulty": "easy",
+          "expected": "7.7",
+          "actual": "7.7",
+          "reasoning": "Avg = 0.85 x 2 + 0.15 x 40 = 1.7 + 6 = 7.7 ms.",
+          "correct": true
+        },
+        {
+          "id": "r-20",
+          "difficulty": "hard",
+          "expected": "16",
+          "actual": "8.003",
+          "reasoning": "Per-item: A 0.005, B 0.008, C 0.003 min. Pipelined: total = A for all (5 min) + B for last item (0.008) + C for last item (0.003). But B is slowest; bottleneck. End-to-end = first item through A+B+C (0.005+0.008+0.003=0.016) + remaining 999 items at bottleneck B rate (999 x 0.008 = 7.992) + C tail (0.003). Approx = 0.016 + 7.992 + 0.003 - 0.008 = ~8.003. Roughly 8 min plus small tail. Bottleneck dominates: B takes 8 min for all, plus C tail 0.003 after B finishes ~ 8.003. Round to 8.003.",
+          "correct": false
+        }
+      ]
+    },
+    "codecfit": {
+      "accuracy": 0.85,
+      "rows": [
+        {
+          "id": "r-01",
+          "difficulty": "easy",
+          "expected": "83",
+          "actual": "83",
+          "reasoning": "Initial 47 tokens plus 3 retries of 12 tokens each: 47 + 36 = 83.",
+          "correct": true
+        },
+        {
+          "id": "r-02",
+          "difficulty": "easy",
+          "expected": "92.5",
+          "actual": "92.5",
+          "reasoning": "Passed = 240 - 18 = 222. Percentage = 222/240 = 0.925 = 92.5%.",
+          "correct": true
+        },
+        {
+          "id": "r-03",
+          "difficulty": "med",
+          "expected": "56",
+          "actual": "56",
+          "reasoning": "21 tasks / 3 workers = 7 tasks each in parallel. 7 * 8 min = 56 min.",
+          "correct": true
+        },
+        {
+          "id": "r-04",
+          "difficulty": "med",
+          "expected": "216",
+          "actual": "216",
+          "reasoning": "30 days * 24 * 60 = 43200 min. Downtime = 0.5% = 0.005 * 43200 = 216 min.",
+          "correct": true
+        },
+        {
+          "id": "r-05",
+          "difficulty": "med",
+          "expected": "28",
+          "actual": "33.6",
+          "reasoning": "A rate = 1/4, B rate = 1/6 (50% slower means 6 min). Combined = 5/12 tasks/min. 14 / (5/12) = 33.6 min.",
+          "correct": false
+        },
+        {
+          "id": "r-06",
+          "difficulty": "easy",
+          "expected": "33.3",
+          "actual": "33.33",
+          "reasoning": "Net drain = 80 - 50 = 30 msg/sec. 1000/30 = 33.33 sec.",
+          "correct": true
+        },
+        {
+          "id": "r-07",
+          "difficulty": "hard",
+          "expected": "11.9",
+          "actual": "10.925",
+          "reasoning": "Extract=5, Transform=1.5, Load=3. Sum=9.5. Add 15% overhead: 9.5*1.15 = 10.925 min.",
+          "correct": false
+        },
+        {
+          "id": "r-08",
+          "difficulty": "med",
+          "expected": "0.84",
+          "actual": "0.84",
+          "reasoning": "Binomial(5,0.7), P(X>=3) = P(3)+P(4)+P(5) = 0.3087+0.36015+0.16807 = 0.83692 ≈ 0.84.",
+          "correct": true
+        },
+        {
+          "id": "r-09",
+          "difficulty": "easy",
+          "expected": "2",
+          "actual": "2",
+          "reasoning": "Worker 2 has 40 tasks. Rate = 20/hr. 40/20 = 2 hours.",
+          "correct": true
+        },
+        {
+          "id": "r-10",
+          "difficulty": "hard",
+          "expected": "71.6",
+          "actual": "71.6",
+          "reasoning": "0.92^4 = 0.71639296 = 71.6%.",
+          "correct": true
+        },
+        {
+          "id": "r-11",
+          "difficulty": "easy",
+          "expected": "60",
+          "actual": "60",
+          "reasoning": "Limit 600 - used 540 = 60 more requests available in window.",
+          "correct": true
+        },
+        {
+          "id": "r-12",
+          "difficulty": "med",
+          "expected": "0.765",
+          "actual": "0.765",
+          "reasoning": "Independent AND: 0.9 * 0.85 = 0.765.",
+          "correct": true
+        },
+        {
+          "id": "r-13",
+          "difficulty": "easy",
+          "expected": "9",
+          "actual": "9",
+          "reasoning": "12 * (1 - 0.25) = 12 * 0.75 = 9 nodes.",
+          "correct": true
+        },
+        {
+          "id": "r-14",
+          "difficulty": "med",
+          "expected": "126",
+          "actual": "126",
+          "reasoning": "500/8 = 62.5, round up to 63 tasks max per worker. 63 * 2 = 126 min.",
+          "correct": true
+        },
+        {
+          "id": "r-15",
+          "difficulty": "hard",
+          "expected": "4347",
+          "actual": "4347",
+          "reasoning": "Available = 1,000,000 - 148 = 999,852. Per message = 230. 999852/230 = 4347.18, floor = 4347.",
+          "correct": true
+        },
+        {
+          "id": "r-16",
+          "difficulty": "easy",
+          "expected": "80",
+          "actual": "80",
+          "reasoning": "(20 - 4)/20 = 16/20 = 80%.",
+          "correct": true
+        },
+        {
+          "id": "r-17",
+          "difficulty": "med",
+          "expected": "30",
+          "actual": "30",
+          "reasoning": "200 * 0.30 = 60 errors. Half retryable = 30.",
+          "correct": true
+        },
+        {
+          "id": "r-18",
+          "difficulty": "med",
+          "expected": "1440000",
+          "actual": "1440000",
+          "reasoning": "8 min = 480 sec. Total requests = 5000 * 480 = 2,400,000. Failed = 60% = 1,440,000.",
+          "correct": true
+        },
+        {
+          "id": "r-19",
+          "difficulty": "easy",
+          "expected": "7.7",
+          "actual": "7.7",
+          "reasoning": "0.85*2 + 0.15*40 = 1.7 + 6.0 = 7.7 ms.",
+          "correct": true
+        },
+        {
+          "id": "r-20",
+          "difficulty": "hard",
+          "expected": "16",
+          "actual": "8.008",
+          "reasoning": "Per-item: A=0.005, B=0.008, C=0.003. Pipeline T = first-item latency + (N-1)*max_stage = 0.016 + 999*0.008 = 0.016 + 7.992 = 8.008 min.",
+          "correct": false
+        }
+      ]
+    }
+  },
+  "delta": 0,
+  "by_difficulty": {
+    "easy": {
+      "baseline": {
+        "n": 8,
+        "acc": 1
+      },
+      "codecfit": {
+        "n": 8,
+        "acc": 1
+      }
+    },
+    "med": {
+      "baseline": {
+        "n": 8,
+        "acc": 0.875
+      },
+      "codecfit": {
+        "n": 8,
+        "acc": 0.875
+      }
+    },
+    "hard": {
+      "baseline": {
+        "n": 4,
+        "acc": 0.5
+      },
+      "codecfit": {
+        "n": 4,
+        "acc": 0.5
+      }
+    }
+  }
+}

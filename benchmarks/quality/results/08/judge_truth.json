@@ -1,0 +1,107 @@
+[
+  {
+    "id": "t-01",
+    "_truth": {
+      "A_is": "baseline",
+      "B_is": "codecfit"
+    }
+  },
+  {
+    "id": "t-02",
+    "_truth": {
+      "A_is": "codecfit",
+      "B_is": "baseline"
+    }
+  },
+  {
+    "id": "t-03",
+    "_truth": {
+      "A_is": "baseline",
+      "B_is": "codecfit"
+    }
+  },
+  {
+    "id": "t-04",
+    "_truth": {
+      "A_is": "codecfit",
+      "B_is": "baseline"
+    }
+  },
+  {
+    "id": "t-05",
+    "_truth": {
+      "A_is": "baseline",
+      "B_is": "codecfit"
+    }
+  },
+  {
+    "id": "t-06",
+    "_truth": {
+      "A_is": "codecfit",
+      "B_is": "baseline"
+    }
+  },
+  {
+    "id": "t-07",
+    "_truth": {
+      "A_is": "baseline",
+      "B_is": "codecfit"
+    }
+  },
+  {
+    "id": "t-08",
+    "_truth": {
+      "A_is": "codecfit",
+      "B_is": "baseline"
+    }
+  },
+  {
+    "id": "t-09",
+    "_truth": {
+      "A_is": "baseline",
+      "B_is": "codecfit"
+    }
+  },
+  {
+    "id": "t-10",
+    "_truth": {
+      "A_is": "codecfit",
+      "B_is": "baseline"
+    }
+  },
+  {
+    "id": "t-11",
+    "_truth": {
+      "A_is": "baseline",
+      "B_is": "codecfit"
+    }
+  },
+  {
+    "id": "t-12",
+    "_truth": {
+      "A_is": "codecfit",
+      "B_is": "baseline"
+    }
+  },
+  {
+    "id": "t-13",
+    "_truth": {
+      "A_is": "baseline",
+      "B_is": "codecfit"
+    }
+  },
+  {
+    "id": "t-14",
+    "_truth": {
+      "A_is": "codecfit",
+      "B_is": "baseline"
+    }
+  },
+  {
+    "id": "t-15",
+    "_truth": {
+      "A_is": "baseline",
+      "B_is": "codecfit"
+    }
+  }
+]

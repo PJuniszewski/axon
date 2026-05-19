@@ -1,0 +1,107 @@
+[
+  {
+    "id": "ad-01",
+    "kind": "unbalanced-payload",
+    "axon": "⊗ ⟦pay.svc:timeout",
+    "correct_behaviour": "refuse",
+    "notes": "missing ⟧"
+  },
+  {
+    "id": "ad-02",
+    "kind": "unbalanced-context",
+    "axon": "?@inv ⟦status⟩ ⌛5s",
+    "correct_behaviour": "refuse",
+    "notes": "mismatched ⟨⟩ vs ⟦⟧"
+  },
+  {
+    "id": "ad-03",
+    "kind": "unknown-symbol",
+    "axon": "🜨 ⟦deploy v2⟧",
+    "correct_behaviour": "refuse",
+    "notes": "🜨 not in codebook"
+  },
+  {
+    "id": "ad-04",
+    "kind": "two-intents",
+    "axon": "! ⊗ ⟦pay.svc fail⟧",
+    "correct_behaviour": "preserve_uncertainty",
+    "notes": "both REQUEST and ERROR"
+  },
+  {
+    "id": "ad-05",
+    "kind": "empty-payload",
+    "axon": "≡ ⟦⟧",
+    "correct_behaviour": "preserve_uncertainty",
+    "notes": "INFORM with no content"
+  },
+  {
+    "id": "ad-06",
+    "kind": "just-symbols",
+    "axon": "∀ ∃ ∅ ⊂ ⊕",
+    "correct_behaviour": "refuse",
+    "notes": "no intent, no payload, just operators"
+  },
+  {
+    "id": "ad-07",
+    "kind": "contradiction",
+    "axon": "∎ ⟦depl fail | depl ok⟧",
+    "correct_behaviour": "preserve_uncertainty",
+    "notes": "states both success and failure"
+  },
+  {
+    "id": "ad-08",
+    "kind": "agent-no-name",
+    "axon": "→@ ⟦rev PR#42⟧",
+    "correct_behaviour": "refuse",
+    "notes": "@ with no agent name"
+  },
+  {
+    "id": "ad-09",
+    "kind": "negation-injection",
+    "axon": "¬⊗ ⟦pay.svc:timeout⟧",
+    "correct_behaviour": "preserve_uncertainty",
+    "notes": "negated ERROR — meaning unclear"
+  },
+  {
+    "id": "ad-10",
+    "kind": "circular-ref",
+    "axon": "@a → @b → @a ⟦loop⟧",
+    "correct_behaviour": "preserve_uncertainty",
+    "notes": "circular delegation chain"
+  },
+  {
+    "id": "ad-11",
+    "kind": "empty-string",
+    "axon": "",
+    "correct_behaviour": "refuse",
+    "notes": ""
+  },
+  {
+    "id": "ad-12",
+    "kind": "only-whitespace",
+    "axon": "   \n\t  ",
+    "correct_behaviour": "refuse",
+    "notes": ""
+  },
+  {
+    "id": "ad-13",
+    "kind": "nl-disguise",
+    "axon": "Please review pull request 42",
+    "correct_behaviour": "best_effort",
+    "notes": "no AXON syntax — could be passthrough"
+  },
+  {
+    "id": "ad-14",
+    "kind": "wrong-numeric",
+    "axon": "≡ ⟦records:NaN⟧",
+    "correct_behaviour": "preserve_uncertainty",
+    "notes": "NaN is not a real count"
+  },
+  {
+    "id": "ad-15",
+    "kind": "future-reference",
+    "axon": "? @tomorrow.weather ⟦?⟧",
+    "correct_behaviour": "best_effort",
+    "notes": "valid syntax, semantically odd"
+  }
+]

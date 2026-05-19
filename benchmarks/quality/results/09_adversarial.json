@@ -1,0 +1,132 @@
+{
+  "test": "adversarial",
+  "n": 15,
+  "counts": {
+    "correct": 6,
+    "ok_hedge": 6,
+    "hallucinated": 1,
+    "over_refused": 2
+  },
+  "rows": [
+    {
+      "id": "ad-01",
+      "kind": "unbalanced-payload",
+      "expected": "refuse",
+      "decoded": "REFUSE",
+      "confidence": 2,
+      "verdict": "correct"
+    },
+    {
+      "id": "ad-02",
+      "kind": "unbalanced-context",
+      "expected": "refuse",
+      "decoded": "REFUSE",
+      "confidence": 2,
+      "verdict": "correct"
+    },
+    {
+      "id": "ad-03",
+      "kind": "unknown-symbol",
+      "expected": "refuse",
+      "decoded": "REFUSE",
+      "confidence": 1,
+      "verdict": "correct"
+    },
+    {
+      "id": "ad-04",
+      "kind": "two-intents",
+      "expected": "preserve_uncertainty",
+      "decoded": "REFUSE",
+      "confidence": 3,
+      "verdict": "ok_hedge"
+    },
+    {
+      "id": "ad-05",
+      "kind": "empty-payload",
+      "expected": "preserve_uncertainty",
+      "decoded": "REFUSE",
+      "confidence": 1,
+      "verdict": "ok_hedge"
+    },
+    {
+      "id": "ad-06",
+      "kind": "just-symbols",
+      "expected": "refuse",
+      "decoded": "REFUSE",
+      "confidence": 0,
+      "verdict": "correct"
+    },
+    {
+      "id": "ad-07",
+      "kind": "contradiction",
+      "expected": "preserve_uncertainty",
+      "decoded": "REFUSE",
+      "confidence": 1,
+      "verdict": "ok_hedge"
+    },
+    {
+      "id": "ad-08",
+      "kind": "agent-no-name",
+      "expected": "refuse",
+      "decoded": "Delegate to unspecified agent: review pull request 42",
+      "confidence": 4,
+      "verdict": "hallucinated"
+    },
+    {
+      "id": "ad-09",
+      "kind": "negation-injection",
+      "expected": "preserve_uncertainty",
+      "decoded": "REFUSE",
+      "confidence": 3,
+      "verdict": "ok_hedge"
+    },
+    {
+      "id": "ad-10",
+      "kind": "circular-ref",
+      "expected": "preserve_uncertainty",
+      "decoded": "REFUSE",
+      "confidence": 2,
+      "verdict": "ok_hedge"
+    },
+    {
+      "id": "ad-11",
+      "kind": "empty-string",
+      "expected": "refuse",
+      "decoded": "REFUSE",
+      "confidence": 0,
+      "verdict": "correct"
+    },
+    {
+      "id": "ad-12",
+      "kind": "only-whitespace",
+      "expected": "refuse",
+      "decoded": "REFUSE",
+      "confidence": 0,
+      "verdict": "correct"
+    },
+    {
+      "id": "ad-13",
+      "kind": "nl-disguise",
+      "expected": "best_effort",
+      "decoded": "REFUSE",
+      "confidence": 1,
+      "verdict": "over_refused"
+    },
+    {
+      "id": "ad-14",
+      "kind": "wrong-numeric",
+      "expected": "preserve_uncertainty",
+      "decoded": "REFUSE",
+      "confidence": 1,
+      "verdict": "ok_hedge"
+    },
+    {
+      "id": "ad-15",
+      "kind": "future-reference",
+      "expected": "best_effort",
+      "decoded": "REFUSE",
+      "confidence": 2,
+      "verdict": "over_refused"
+    }
+  ]
+}

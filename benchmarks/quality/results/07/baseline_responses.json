@@ -1,0 +1,22 @@
+[
+  {"id": "r-01", "reasoning": "Initial 47 tokens + 3 retries x 12 tokens = 47 + 36 = 83.", "answer": "83"},
+  {"id": "r-02", "reasoning": "240 - 18 = 222 passed. 222/240 = 0.925 = 92.5%.", "answer": "92.5"},
+  {"id": "r-03", "reasoning": "3 workers in parallel, 21 tasks means 7 tasks per worker. 7 x 8 = 56 minutes.", "answer": "56"},
+  {"id": "r-04", "reasoning": "30 days x 24 x 60 = 43200 minutes. Downtime = 0.5% x 43200 = 216 minutes.", "answer": "216"},
+  {"id": "r-05", "reasoning": "Agent A: 4 min/task. Agent B 50% slower: 6 min/task. Working in parallel one each at a time, 14 tasks split: 7 each. A finishes 7 in 28 min, B in 42 min. Max = 42.", "answer": "42"},
+  {"id": "r-06", "reasoning": "Net drain = 80 - 50 = 30 per second. 1000/30 = 33.33 seconds.", "answer": "33.33"},
+  {"id": "r-07", "reasoning": "Extraction 5 min. Transformation 30% x 5 = 1.5 min. Loading 2 x 1.5 = 3 min. Subtotal = 9.5. Validation 15% overhead: 9.5 x 1.15 = 10.925.", "answer": "10.925"},
+  {"id": "r-08", "reasoning": "P(>=3 of 5) with p=0.7. P(3)=C(5,3)*0.7^3*0.3^2=10*0.343*0.09=0.3087. P(4)=5*0.2401*0.3=0.36015. P(5)=0.16807. Sum=0.83692. Rounded to 0.84.", "answer": "0.84"},
+  {"id": "r-09", "reasoning": "Worker 2 has 40% of 100 = 40 tasks. Does 20 in 1 hour, so 40 in 2 hours.", "answer": "2"},
+  {"id": "r-10", "reasoning": "0.92^4 = 0.92*0.92=0.8464; 0.8464*0.92=0.778688; *0.92=0.71639296. As percent ~71.6%.", "answer": "71.6"},
+  {"id": "r-11", "reasoning": "600/min limit, current 540 used. Remaining budget = 60 requests for this window.", "answer": "60"},
+  {"id": "r-12", "reasoning": "0.9 x 0.85 = 0.765.", "answer": "0.765"},
+  {"id": "r-13", "reasoning": "25% of 12 = 3 reserved. Production = 12 - 3 = 9.", "answer": "9"},
+  {"id": "r-14", "reasoning": "500/8 = 62.5, round up to 63 tasks per worker. 63 x 2 = 126 minutes.", "answer": "126"},
+  {"id": "r-15", "reasoning": "Budget 1,000,000 - 148 overhead = 999,852. Each message uses 230 tokens (encoded). 999852/230 = 4347.18... floor = 4347.", "answer": "4347"},
+  {"id": "r-16", "reasoning": "20 - 4 = 16 healthy. 16/20 = 80%.", "answer": "80"},
+  {"id": "r-17", "reasoning": "30% of 200 = 60 errors. Half = 30 retryable.", "answer": "30"},
+  {"id": "r-18", "reasoning": "8 min = 480 sec. 5000 rps x 480 = 2,400,000 requests. 60% errors = 1,440,000 failed.", "answer": "1440000"},
+  {"id": "r-19", "reasoning": "Avg = 0.85 x 2 + 0.15 x 40 = 1.7 + 6 = 7.7 ms.", "answer": "7.7"},
+  {"id": "r-20", "reasoning": "Per-item: A 0.005, B 0.008, C 0.003 min. Pipelined: total = A for all (5 min) + B for last item (0.008) + C for last item (0.003). But B is slowest; bottleneck. End-to-end = first item through A+B+C (0.005+0.008+0.003=0.016) + remaining 999 items at bottleneck B rate (999 x 0.008 = 7.992) + C tail (0.003). Approx = 0.016 + 7.992 + 0.003 - 0.008 = ~8.003. Roughly 8 min plus small tail. Bottleneck dominates: B takes 8 min for all, plus C tail 0.003 after B finishes ~ 8.003. Round to 8.003.", "answer": "8.003"}
+]

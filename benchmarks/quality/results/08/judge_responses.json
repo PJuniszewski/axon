@@ -1,0 +1,17 @@
+[
+  {"id": "t-01", "A_task": 10, "A_entities": 10, "B_task": 8, "B_entities": 8, "rationale": "A is complete natural language. B uses compressed protocol with 'prod' and 'orch' shortenings; entities present but abbreviated."},
+  {"id": "t-02", "A_task": 8, "A_entities": 9, "B_task": 10, "B_entities": 10, "rationale": "A uses compressed notation with PR#217 and security-agent abbreviated. B is complete natural language addressing all requirements."},
+  {"id": "t-03", "A_task": 10, "A_entities": 10, "B_task": 8, "B_entities": 8, "rationale": "A is full natural language. B uses compressed form 'pay.svc' for payment; numerics 30 and 5 present."},
+  {"id": "t-04", "A_task": 8, "A_entities": 9, "B_task": 10, "B_entities": 10, "rationale": "A uses compressed protocol. B is complete natural language with inventory and 5 explicitly stated."},
+  {"id": "t-05", "A_task": 10, "A_entities": 10, "B_task": 7, "B_entities": 7, "rationale": "A is full alert text. B uses 'lb' for load balancer and 'infra' for infrastructure; both abbreviated."},
+  {"id": "t-06", "A_task": 8, "A_entities": 9, "B_task": 10, "B_entities": 10, "rationale": "A is compressed protocol. B is clear natural language with 12, 10, and aggregator all explicit."},
+  {"id": "t-07", "A_task": 10, "A_entities": 10, "B_task": 8, "B_entities": 8, "rationale": "A is full natural language. B compressed with 'orch' and numbers present."},
+  {"id": "t-08", "A_task": 8, "A_entities": 9, "B_task": 10, "B_entities": 10, "rationale": "A is compressed notation. B is complete natural language with 99, 2, and 1 explicit."},
+  {"id": "t-09", "A_task": 10, "A_entities": 10, "B_task": 9, "B_entities": 10, "rationale": "A is full natural language. B compressed but auth-gateway and 3.1.4 (as v3.1.4) both present."},
+  {"id": "t-10", "A_task": 8, "A_entities": 10, "B_task": 10, "B_entities": 10, "rationale": "A is compressed. B is natural language; both have u-44291 and secondary."},
+  {"id": "t-11", "A_task": 10, "A_entities": 10, "B_task": 9, "B_entities": 10, "rationale": "A is natural language. B compressed but all three numerics present."},
+  {"id": "t-12", "A_task": 8, "A_entities": 9, "B_task": 10, "B_entities": 10, "rationale": "A compresses 'prod' and 'sec.audit'. B is complete natural language with production and audit explicit."},
+  {"id": "t-13", "A_task": 10, "A_entities": 10, "B_task": 9, "B_entities": 9, "rationale": "A is full natural language. B uses 'auth.svc' abbreviation; EU and rate present."},
+  {"id": "t-14", "A_task": 8, "A_entities": 9, "B_task": 10, "B_entities": 10, "rationale": "A uses 'orch' shorthand. B is natural language listing all three workers and orchestrator."},
+  {"id": "t-15", "A_task": 10, "A_entities": 10, "B_task": 9, "B_entities": 10, "rationale": "A is full natural language. B compressed but t-9921, 1000, and 60 all present."}
+]
